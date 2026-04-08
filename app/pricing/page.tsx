@@ -9,10 +9,9 @@ const PLANS = [
     price: '$0',
     period: '/month',
     features: [
-      '1 request per month',
-      'English & Spanish support',
-      'Document drafts',
-      'Step-by-step guidance',
+      '1 document analysis per month',
+      'English, Spanish & Portuguese',
+      'Image & PDF support',
     ],
     cta: 'Get Started',
     priceId: null,
@@ -23,30 +22,15 @@ const PLANS = [
     price: '$15',
     period: '/month',
     features: [
-      'Unlimited requests',
+      'Unlimited document analysis',
       'English, Spanish & Portuguese',
-      'Document drafts',
-      'Step-by-step guidance',
-      'All categories',
+      'Image & PDF support',
+      'Text paste support',
+      'Copy & save results',
     ],
     cta: 'Subscribe',
     priceId: process.env.NEXT_PUBLIC_STRIPE_STANDARD_PRICE_ID,
     highlight: true,
-  },
-  {
-    name: 'Pro',
-    price: '$29',
-    period: '/month',
-    features: [
-      'Everything in Standard',
-      'Access to specialist directory',
-      'Filter by location & category',
-      'English & Spanish specialists',
-      'Discounted consultation fees',
-    ],
-    cta: 'Subscribe',
-    priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID,
-    highlight: false,
   },
 ]
 
@@ -55,27 +39,18 @@ export default function PricingPage() {
   const router = useRouter()
 
   const handleSubscribe = async (priceId: string | null | undefined, planName: string) => {
-    // Freeプランはサインアップページへ
     if (!priceId) {
       router.push('/auth')
       return
     }
-
     setLoading(planName)
-
     try {
-      // ログイン確認
       const { data: { user } } = await supabase.auth.getUser()
-
       if (!user) {
-        // 未ログイン → priceIdを記憶してサインアップへ
         localStorage.setItem('pendingPriceId', priceId)
-        localStorage.setItem('pendingPlanName', planName)
         router.push('/auth?mode=signup')
         return
       }
-
-      // ログイン済み → そのまま決済へ
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -83,7 +58,6 @@ export default function PricingPage() {
       })
       const data = await res.json()
       if (data.url) window.location.href = data.url
-      if (data.error) console.error(data.error)
     } catch (e) {
       console.error(e)
     } finally {
@@ -92,61 +66,69 @@ export default function PricingPage() {
   }
 
   return (
-    <main style={{ maxWidth: 800, margin: '0 auto', padding: '2rem 1rem' }}>
-      <h1 style={{ fontSize: 28, fontWeight: 600, textAlign: 'center', marginBottom: 8 }}>
-        Simple, transparent pricing
-      </h1>
-      <p style={{ textAlign: 'center', color: '#666', marginBottom: 40, fontSize: 15 }}>
-        Cancel anytime. No hidden fees.
-      </p>
+    <main style={{ maxWidth: 560, margin: '0 auto', padding: '2rem 1rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: 32, gap: 12 }}>
+        <button
+          onClick={() => router.push('/')}
+          style={{ fontSize: 13, color: '#666', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+        >
+          ← Back
+        </button>
+        <div style={{ fontSize: 18, fontWeight: 700 }}>SortJapan</div>
+      </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+      <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 6 }}>Simple pricing</h1>
+      <p style={{ color: '#666', fontSize: 14, marginBottom: 32 }}>Cancel anytime. No hidden fees.</p>
+
+      <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 16 }}>
         {PLANS.map(plan => (
           <div
             key={plan.name}
             style={{
               border: plan.highlight ? '2px solid #1a1a1a' : '1px solid #eee',
-              borderRadius: 12,
-              padding: '24px 20px',
-              background: '#fff',
-              position: 'relative',
+              borderRadius: 14, padding: '24px',
+              position: 'relative' as const,
             }}
           >
             {plan.highlight && (
               <div style={{
-                position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)',
-                background: '#1a1a1a', color: '#fff', fontSize: 11, fontWeight: 500,
-                padding: '3px 12px', borderRadius: 20,
+                position: 'absolute' as const, top: -12, left: 24,
+                background: '#1a1a1a', color: '#fff', fontSize: 11,
+                padding: '3px 12px', borderRadius: 20, fontWeight: 500,
               }}>
                 Most popular
               </div>
             )}
-            <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 4 }}>{plan.name}</h2>
-            <div style={{ marginBottom: 20 }}>
-              <span style={{ fontSize: 32, fontWeight: 700 }}>{plan.price}</span>
-              <span style={{ color: '#666', fontSize: 14 }}>{plan.period}</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
+              <div>
+                <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 4 }}>{plan.name}</div>
+                <div>
+                  <span style={{ fontSize: 32, fontWeight: 700 }}>{plan.price}</span>
+                  <span style={{ color: '#666', fontSize: 14 }}>{plan.period}</span>
+                </div>
+              </div>
+              <button
+                onClick={() => handleSubscribe(plan.priceId, plan.name)}
+                disabled={loading === plan.name}
+                style={{
+                  padding: '10px 20px', borderRadius: 8,
+                  background: plan.highlight ? '#1a1a1a' : '#fff',
+                  color: plan.highlight ? '#fff' : '#1a1a1a',
+                  border: plan.highlight ? 'none' : '1px solid #1a1a1a',
+                  fontSize: 14, fontWeight: 500, cursor: 'pointer',
+                  whiteSpace: 'nowrap' as const,
+                }}
+              >
+                {loading === plan.name ? 'Loading...' : plan.cta}
+              </button>
             </div>
-            <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px', fontSize: 14 }}>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               {plan.features.map(f => (
-                <li key={f} style={{ padding: '5px 0', color: '#444', display: 'flex', gap: 8 }}>
-                  <span style={{ color: '#1a1a1a', fontWeight: 600 }}>✓</span>
-                  {f}
+                <li key={f} style={{ fontSize: 13, color: '#444', padding: '4px 0', display: 'flex', gap: 8 }}>
+                  <span style={{ color: '#4caf50' }}>✓</span>{f}
                 </li>
               ))}
             </ul>
-            <button
-              onClick={() => handleSubscribe(plan.priceId, plan.name)}
-              disabled={loading === plan.name}
-              style={{
-                width: '100%', padding: '10px', borderRadius: 8,
-                background: plan.highlight ? '#1a1a1a' : '#fff',
-                color: plan.highlight ? '#fff' : '#1a1a1a',
-                border: plan.highlight ? 'none' : '1px solid #1a1a1a',
-                fontSize: 14, fontWeight: 500, cursor: 'pointer',
-              }}
-            >
-              {loading === plan.name ? 'Loading...' : plan.cta}
-            </button>
           </div>
         ))}
       </div>
