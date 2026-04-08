@@ -78,7 +78,7 @@ export default function Home() {
         border: '1px solid #ddd', borderRadius: 6, padding: '4px 10px',
         cursor: 'pointer' }}
     >
-      Find specialist
+      Find specialis
     </button>
     <button
       onClick={() => supabase.auth.signOut().then(() => router.push('/auth'))}
