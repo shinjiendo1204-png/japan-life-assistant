@@ -44,9 +44,9 @@ export default function LandingPage() {
 
       {/* ナビ */}
       <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
-        <div style={{ fontSize: 20, fontWeight: 500, letterSpacing: '-0.5px', color: '#111' }}>
+        <Link href="/landing" style={{ fontSize: 20, fontWeight: 500, letterSpacing: '-0.5px', color: '#111', textDecoration: 'none' }}>
           Sort<span style={{ color: '#e53935' }}>Japan</span>
-        </div>
+        </Link>
         <div style={{ display: 'flex', gap: 8 }}>
           <Link href="/auth" style={{
             fontSize: 13, padding: '7px 16px', borderRadius: 20,

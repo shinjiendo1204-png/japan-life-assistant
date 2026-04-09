@@ -398,7 +398,10 @@ export default function Home() {
   if (authLoading) return (
   <main style={{ maxWidth: 680, margin: '0 auto', padding: '1.5rem 1rem' }}>
     <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-      <div style={{ fontSize: 22, fontWeight: 500, letterSpacing: '-0.5px', color: '#111' }}>
+      <div
+        onClick={() => router.push('/')}
+        style={{ fontSize: 22, fontWeight: 500, letterSpacing: '-0.5px', color: '#111', cursor: 'pointer' }}
+      >
         Sort<span style={{ color: '#e53935' }}>Japan</span>
       </div>
     </nav>
