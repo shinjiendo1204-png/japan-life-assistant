@@ -322,12 +322,13 @@ export default function Home() {
     marginBottom: 10,
   }
 
-  useEffect(() => {
+    useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) router.push('/auth')
+      if (!user) router.push('/landing')
       else setAuthLoading(false)
     })
   }, [])
+
 
   const handleFile = (f: File) => {
   // 10MB制限
@@ -390,26 +391,34 @@ export default function Home() {
   return (
     <main style={{ maxWidth: 680, margin: '0 auto', padding: '1.5rem 1rem' }}>
 
-      {/* ナビゲーション */}
       <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <div style={{ fontSize: 22, fontWeight: 500, letterSpacing: '-0.5px', color: '#111' }}>
           Sort<span style={{ color: '#e53935' }}>Japan</span>
         </div>
-        <div style={{ display: 'flex', gap: 6 }}>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <button
             onClick={() => router.push('/pricing')}
-            style={{ fontSize: 12, padding: '5px 12px', borderRadius: 20, border: '0.5px solid #ddd', background: 'transparent', color: '#666', cursor: 'pointer' }}
+            style={{
+              fontSize: 13, padding: '7px 16px', borderRadius: 20,
+              border: 'none', background: '#111', color: '#fff',
+              cursor: 'pointer', fontWeight: 500,
+            }}
           >
-            {t.plans}
+            ✦ Upgrade
           </button>
           <button
             onClick={() => supabase.auth.signOut().then(() => router.push('/auth'))}
-            style={{ fontSize: 12, padding: '5px 12px', borderRadius: 20, border: '0.5px solid #ddd', background: 'transparent', color: '#666', cursor: 'pointer' }}
+            style={{
+              fontSize: 13, padding: '7px 16px', borderRadius: 20,
+              border: '1px solid #ddd', background: 'transparent', color: '#666',
+              cursor: 'pointer',
+            }}
           >
             {t.signout}
           </button>
         </div>
       </nav>
+
 
       {/* ヒーロー */}
       <div style={{ marginBottom: '2rem' }}>
@@ -573,30 +582,66 @@ export default function Home() {
         {loading ? t.analyzing : t.analyze}
       </button>
 
-      {/* 結果 */}
-      {output === '__FREE_LIMIT__' ? (
-        <div style={{
-          background: '#fffbeb',
-          border: '1px solid #fcd34d',
-          borderRadius: 14,
-          padding: '1.5rem',
-          textAlign: 'center' as const,
-        }}>
-          <div style={{ fontSize: 28, marginBottom: 10 }}>⚠️</div>
-          <div style={{ fontSize: 15, fontWeight: 500, color: '#111', marginBottom: 6 }}>{t.freeLimitTitle}</div>
-          <div style={{ fontSize: 13, color: '#666', marginBottom: 16 }}>{t.freeLimitDesc}</div>
-          <button
-            onClick={() => router.push('/pricing')}
-            style={{
-              padding: '10px 24px', borderRadius: 10,
-              background: '#111', color: '#fff',
-              border: 'none', fontSize: 14, fontWeight: 500, cursor: 'pointer',
-            }}
-          >
-            {t.upgrade}
-          </button>
+       {output === '__FREE_LIMIT__' ? (
+        <div>
+          {/* 使用制限バナー */}
+          <div style={{
+            background: '#111',
+            borderRadius: 14,
+            padding: '1.5rem',
+            marginBottom: 12,
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
+              <div>
+                <div style={{ fontSize: 15, fontWeight: 500, color: '#fff', marginBottom: 4 }}>
+                  {t.freeLimitTitle}
+                </div>
+                <div style={{ fontSize: 13, color: '#aaa', lineHeight: 1.5, marginBottom: 14 }}>
+                  {t.freeLimitDesc}
+                </div>
+                <button
+                  onClick={() => router.push('/pricing')}
+                  style={{
+                    padding: '9px 20px', borderRadius: 8,
+                    background: '#fff', color: '#111',
+                    border: 'none', fontSize: 13, fontWeight: 500, cursor: 'pointer',
+                  }}
+                >
+                  {t.upgrade} →
+                </button>
+              </div>
+              <div style={{ fontSize: 36, flexShrink: 0 }}>🔓</div>
+            </div>
+          </div>
+
+          {/* Standardの特典リスト */}
+          <div style={{
+            background: '#f7f7f7',
+            borderRadius: 12,
+            padding: '1rem',
+            border: '0.5px solid #e8e8e8',
+          }}>
+            <div style={{ fontSize: 11, fontWeight: 500, color: '#aaa', textTransform: 'uppercase' as const, letterSpacing: '0.06em', marginBottom: 10 }}>
+              Standard plan — $15/month
+            </div>
+            {[
+              '30 document analyses per month',
+              'All 12 languages supported',
+              'Image, PDF & text paste',
+              'Cancel anytime',
+            ].map(item => (
+              <div key={item} style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                fontSize: 13, color: '#444', padding: '4px 0',
+              }}>
+                <span style={{ color: '#4caf50', fontWeight: 500 }}>✓</span>
+                {item}
+              </div>
+            ))}
+          </div>
         </div>
       ) : output ? (
+
         <div>
           <div style={sectionLabel}>{t.resultLabel}</div>
           <div style={{
