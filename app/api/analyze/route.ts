@@ -44,22 +44,28 @@ export async function POST(req: NextRequest) {
     const text = formData.get('text') as string | null
 
     // ① 認証チェック
-    const cookieStore = await cookies()
-    const supabaseServer = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value
-          },
-        },
-      }
-    )
+const cookieStore = await cookies()
 
-    const { data: { user } } = await supabaseServer.auth.getUser()
-    console.log('Auth check - user:', user?.id ?? 'not logged in')
+// 全クッキーをログ出力（デバッグ用）
+const allCookies = cookieStore.getAll()
+console.log('All cookies:', allCookies.map(c => c.name))
 
+const supabaseServer = createServerClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  {
+    cookies: {
+      get(name: string) {
+        const value = cookieStore.get(name)?.value
+        console.log(`Cookie ${name}:`, value ? 'present' : 'missing')
+        return value
+      },
+    },
+  }
+)
+
+const { data: { user } } = await supabaseServer.auth.getUser()
+console.log('Auth result - user:', user?.id ?? 'NOT AUTHENTICATED')
     if (!user) {
       return NextResponse.json(
         { error: 'Please sign in to use this service.' },
