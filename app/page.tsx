@@ -348,6 +348,21 @@ export default function Home() {
     if (f) handleFile(f)
   }
 
+  const handlePortal = async () => {
+  try {
+    const { data: { session } } = await supabase.auth.getSession()
+    const res = await fetch('/api/portal', {
+      method: 'POST',
+      headers: session ? { 'Authorization': `Bearer ${session.access_token}` } : {},
+    })
+    const data = await res.json()
+    if (data.url) window.location.href = data.url
+    else alert(data.error || 'Could not open billing portal.')
+  } catch {
+    alert('Error opening billing portal.')
+  }
+}
+
   const handleAnalyze = async () => {
   if (!file && !text.trim()) return
   setLoading(true)
@@ -599,6 +614,16 @@ export default function Home() {
                 <div style={{ fontSize: 13, color: '#aaa', lineHeight: 1.5, marginBottom: 14 }}>
                   {t.freeLimitDesc}
                 </div>
+                <button
+            onClick={handlePortal}
+            style={{
+              fontSize: 13, padding: '7px 16px', borderRadius: 20,
+              border: '1px solid #ddd', background: 'transparent', color: '#666',
+              cursor: 'pointer',
+            }}
+          >
+            Account
+          </button>
                 <button
                   onClick={() => router.push('/pricing')}
                   style={{

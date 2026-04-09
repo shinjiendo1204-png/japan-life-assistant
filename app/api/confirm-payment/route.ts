@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 
     const subscription = session.subscription as Stripe.Subscription
     const priceId = subscription.items.data[0].price.id
-    const plan = priceId === process.env.STRIPE_PRO_PRICE_ID ? 'pro' : 'standard'
+    const plan = 'standard'
 
     console.log('Plan to set:', plan)
     console.log('User ID to update:', userIdFromMeta)
