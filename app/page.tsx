@@ -396,10 +396,26 @@ export default function Home() {
   }
 
   if (authLoading) return (
-    <div style={{ maxWidth: 680, margin: '0 auto', padding: '2rem 1rem' }}>
-      <p style={{ color: '#888', fontSize: 14 }}>Loading...</p>
+  <main style={{ maxWidth: 680, margin: '0 auto', padding: '1.5rem 1rem' }}>
+    <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div style={{ fontSize: 22, fontWeight: 500, letterSpacing: '-0.5px', color: '#111' }}>
+        Sort<span style={{ color: '#e53935' }}>Japan</span>
+      </div>
+    </nav>
+    <div style={{ marginBottom: '2rem' }}>
+      <h1 style={{ fontSize: 28, fontWeight: 500, lineHeight: 1.3, color: '#111', marginBottom: 10 }}>
+        Japanese documents, explained instantly.
+      </h1>
+      <p style={{ fontSize: 15, color: '#666', lineHeight: 1.6 }}>
+        Upload any Japanese mail, contract, or notice.
+      </p>
     </div>
-  )
+    <div style={{ width: '100%', height: 200, background: '#f7f7f7', borderRadius: 14, 
+      display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ fontSize: 13, color: '#bbb' }}>Loading...</div>
+    </div>
+  </main>
+)
 
   const canAnalyze = inputMode === 'upload' ? !!file : !!text.trim()
 
