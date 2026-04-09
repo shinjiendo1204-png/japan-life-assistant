@@ -1,8 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { createServerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 
 const client = new Anthropic()
 
@@ -43,29 +41,27 @@ export async function POST(req: NextRequest) {
     const language = (formData.get('language') as string) || 'en'
     const text = formData.get('text') as string | null
 
-    // ① 認証チェック
-const cookieStore = await cookies()
+    // ① 認証チェック（Authorizationヘッダーからトークンを取得）
+    const authHeader = req.headers.get('Authorization')
+    const token = authHeader?.replace('Bearer ', '')
 
-// 全クッキーをログ出力（デバッグ用）
-const allCookies = cookieStore.getAll()
-console.log('All cookies:', allCookies.map(c => c.name))
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Please sign in to use this service.' },
+        { status: 401 }
+      )
+    }
 
-const supabaseServer = createServerClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  {
-    cookies: {
-      get(name: string) {
-        const value = cookieStore.get(name)?.value
-        console.log(`Cookie ${name}:`, value ? 'present' : 'missing')
-        return value
-      },
-    },
-  }
-)
+    // ② Supabaseクライアント（1つだけ作成）
+    const supabaseAdmin = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
-const { data: { user } } = await supabaseServer.auth.getUser()
-console.log('Auth result - user:', user?.id ?? 'NOT AUTHENTICATED')
+    // トークンでユーザーを確認
+    const { data: { user } } = await supabaseAdmin.auth.getUser(token)
+    console.log('Auth result:', user?.id ?? 'NOT AUTHENTICATED')
+
     if (!user) {
       return NextResponse.json(
         { error: 'Please sign in to use this service.' },
@@ -73,12 +69,7 @@ console.log('Auth result - user:', user?.id ?? 'NOT AUTHENTICATED')
       )
     }
 
-    // ② プロフィール取得
-    const supabaseAdmin = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    )
-
+    // ③ プロフィール取得
     let { data: profile } = await supabaseAdmin
       .from('profiles')
       .select('plan, usage_count, usage_reset_at')
@@ -107,7 +98,7 @@ console.log('Auth result - user:', user?.id ?? 'NOT AUTHENTICATED')
 
     console.log('Profile - plan:', profile.plan, 'usage:', profile.usage_count)
 
-    // ③ 月初リセット
+    // ④ 月初リセット
     const now = new Date()
     const resetAt = new Date(profile.usage_reset_at)
     if (now.getMonth() !== resetAt.getMonth() || now.getFullYear() !== resetAt.getFullYear()) {
@@ -118,7 +109,7 @@ console.log('Auth result - user:', user?.id ?? 'NOT AUTHENTICATED')
       profile.usage_count = 0
     }
 
-    // ④ 使用回数制限チェック
+    // ⑤ 使用回数制限チェック
     const limits: Record<string, number> = { free: 1, standard: 30 }
     const limit = limits[profile.plan] ?? 1
 
@@ -126,13 +117,13 @@ console.log('Auth result - user:', user?.id ?? 'NOT AUTHENTICATED')
       return NextResponse.json({ error: 'FREE_LIMIT_REACHED' }, { status: 403 })
     }
 
-    // ⑤ 使用回数更新
+    // ⑥ 使用回数更新
     await supabaseAdmin
       .from('profiles')
       .update({ usage_count: profile.usage_count + 1 })
       .eq('id', user.id)
 
-    // ⑥ システムプロンプト
+    // ⑦ システムプロンプト
     const langName = LANG_NAMES[language] || 'English'
 
     const systemPrompt = `You are SortJapan, an expert assistant specialized in helping foreigners living in Japan understand Japanese official documents, mail, and paperwork.
@@ -188,7 +179,7 @@ Respond ONLY in ${langName}. Never mix languages in your response except for Jap
 **⚠️ Important warnings**
 [Anything urgent or unusual]`
 
-    // ⑦ メッセージコンテンツを構築
+    // ⑧ メッセージコンテンツを構築
     let messageContent: Anthropic.MessageParam['content']
 
     if (file) {
@@ -233,7 +224,7 @@ Respond ONLY in ${langName}. Never mix languages in your response except for Jap
       return NextResponse.json({ error: 'No file or text provided.' }, { status: 400 })
     }
 
-    // ⑧ AI生成
+    // ⑨ AI生成
     const message = await client.messages.create({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 2048,

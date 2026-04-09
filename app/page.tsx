@@ -348,23 +348,30 @@ export default function Home() {
   }
 
   const handleAnalyze = async () => {
-    if (!file && !text.trim()) return
-    setLoading(true)
-    setOutput('')
-    try {
-      const formData = new FormData()
-      if (file) formData.append('file', file)
-      if (text) formData.append('text', text)
-      formData.append('language', language)
-      const res = await fetch('/api/analyze', { method: 'POST', body: formData })
-      const data = await res.json()
-      setOutput(data.error === 'FREE_LIMIT_REACHED' ? '__FREE_LIMIT__' : data.result || data.error)
-    } catch {
-      setOutput('Error occurred. Please try again.')
-    } finally {
-      setLoading(false)
-    }
+  if (!file && !text.trim()) return
+  setLoading(true)
+  setOutput('')
+  try {
+    const { data: { session } } = await supabase.auth.getSession()
+
+    const formData = new FormData()
+    if (file) formData.append('file', file)
+    if (text) formData.append('text', text)
+    formData.append('language', language)
+
+    const res = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: session ? { 'Authorization': `Bearer ${session.access_token}` } : {},
+      body: formData,
+    })
+    const data = await res.json()
+    setOutput(data.error === 'FREE_LIMIT_REACHED' ? '__FREE_LIMIT__' : data.result || data.error)
+  } catch {
+    setOutput('Error occurred. Please try again.')
+  } finally {
+    setLoading(false)
   }
+}
 
   const handleCopy = () => {
     navigator.clipboard.writeText(output)
