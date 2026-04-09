@@ -6,10 +6,34 @@ import { cookies } from 'next/headers'
 
 const client = new Anthropic()
 
-const DISCLAIMERS = {
+const DISCLAIMERS: Record<string, string> = {
   en: '\n\n---\n⚠️ This analysis is for reference only. Please confirm with the relevant office or a qualified professional before taking action.',
   es: '\n\n---\n⚠️ Este análisis es solo de referencia. Por favor, confirme con la oficina correspondiente o un profesional antes de actuar.',
   pt: '\n\n---\n⚠️ Esta análise é apenas para referência. Confirme com o escritório relevante ou um profissional antes de agir.',
+  zh: '\n\n---\n⚠️ 此分析仅供参考。行动前请向相关机构或专业人士确认。',
+  ko: '\n\n---\n⚠️ 이 분석은 참고용입니다. 조치 전에 관련 기관이나 전문가에게 확인하세요.',
+  vi: '\n\n---\n⚠️ Phân tích này chỉ để tham khảo. Xác nhận với cơ quan hoặc chuyên gia liên quan trước khi hành động.',
+  tl: '\n\n---\n⚠️ Ang pagsusuring ito ay para sa sanggunian lamang. Kumpirmahin sa kaugnay na tanggapan o propesyonal bago kumilos.',
+  ne: '\n\n---\n⚠️ यो विश्लेषण केवल सन्दर्भको लागि हो। कार्य गर्नु अघि सम्बन्धित कार्यालय वा विशेषज्ञसँग पुष्टि गर्नुहोस्।',
+  id: '\n\n---\n⚠️ Analisis ini hanya untuk referensi. Konfirmasi dengan kantor terkait atau profesional sebelum mengambil tindakan.',
+  th: '\n\n---\n⚠️ การวิเคราะห์นี้เพื่อการอ้างอิงเท่านั้น ยืนยันกับสำนักงานที่เกี่ยวข้องหรือผู้เชี่ยวชาญก่อนดำเนินการ',
+  my: '\n\n---\n⚠️ ဤစစ်ဆေးချက်သည် ကိုးကားရန်သာဖြစ်သည်။ ဆောင်ရွက်မည်ဆိုပါက သက်ဆိုင်ရာရုံးနှင့် အတည်ပြုပါ။',
+  fr: '\n\n---\n⚠️ Cette analyse est à titre indicatif uniquement. Confirmez auprès du bureau compétent ou d\'un professionnel avant d\'agir.',
+}
+
+const LANG_NAMES: Record<string, string> = {
+  en: 'English',
+  es: 'Spanish',
+  pt: 'Portuguese',
+  zh: 'Chinese (Simplified)',
+  ko: 'Korean',
+  vi: 'Vietnamese',
+  tl: 'Filipino (Tagalog)',
+  ne: 'Nepali',
+  id: 'Indonesian',
+  th: 'Thai',
+  my: 'Burmese (Myanmar)',
+  fr: 'French',
 }
 
 export async function POST(req: NextRequest) {
@@ -19,34 +43,65 @@ export async function POST(req: NextRequest) {
     const language = (formData.get('language') as string) || 'en'
     const text = formData.get('text') as string | null
 
-    // 認証チェック
+    // ① 認証チェック
     const cookieStore = await cookies()
     const supabaseServer = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      { cookies: { get: (name) => cookieStore.get(name)?.value } }
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value
+          },
+        },
+      }
     )
+
     const { data: { user } } = await supabaseServer.auth.getUser()
+    console.log('Auth check - user:', user?.id ?? 'not logged in')
+
     if (!user) {
-      return NextResponse.json({ error: 'Please sign in.' }, { status: 401 })
+      return NextResponse.json(
+        { error: 'Please sign in to use this service.' },
+        { status: 401 }
+      )
     }
 
-    // プロフィール・使用回数チェック
+    // ② プロフィール取得
     const supabaseAdmin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
-    const { data: profile } = await supabaseAdmin
+
+    let { data: profile } = await supabaseAdmin
       .from('profiles')
       .select('plan, usage_count, usage_reset_at')
       .eq('id', user.id)
       .single()
 
+    // profilesに行がなければ自動作成
+    if (!profile) {
+      await supabaseAdmin.from('profiles').insert({
+        id: user.id,
+        plan: 'free',
+        usage_count: 0,
+        usage_reset_at: new Date().toISOString(),
+      })
+      const { data: newProfile } = await supabaseAdmin
+        .from('profiles')
+        .select('plan, usage_count, usage_reset_at')
+        .eq('id', user.id)
+        .single()
+      profile = newProfile
+    }
+
     if (!profile) {
       return NextResponse.json({ error: 'Profile not found.' }, { status: 404 })
     }
 
-    // 月初リセット
+    console.log('Profile - plan:', profile.plan, 'usage:', profile.usage_count)
+
+    // ③ 月初リセット
     const now = new Date()
     const resetAt = new Date(profile.usage_reset_at)
     if (now.getMonth() !== resetAt.getMonth() || now.getFullYear() !== resetAt.getFullYear()) {
@@ -57,24 +112,22 @@ export async function POST(req: NextRequest) {
       profile.usage_count = 0
     }
 
-    // 使用回数制限
-    const limits: Record<string, number> = { free: 1, standard: 9999, pro: 9999 }
+    // ④ 使用回数制限チェック
+    const limits: Record<string, number> = { free: 1, standard: 30 }
     const limit = limits[profile.plan] ?? 1
+
     if (profile.usage_count >= limit) {
-      return NextResponse.json({
-        error: profile.plan === 'free'
-          ? 'FREE_LIMIT_REACHED'
-          : 'Usage limit reached.'
-      }, { status: 403 })
+      return NextResponse.json({ error: 'FREE_LIMIT_REACHED' }, { status: 403 })
     }
 
-    // 使用回数更新
+    // ⑤ 使用回数更新
     await supabaseAdmin
       .from('profiles')
       .update({ usage_count: profile.usage_count + 1 })
       .eq('id', user.id)
 
-    const langName = language === 'en' ? 'English' : language === 'es' ? 'Spanish' : 'Portuguese'
+    // ⑥ システムプロンプト
+    const langName = LANG_NAMES[language] || 'English'
 
     const systemPrompt = `You are SortJapan, an expert assistant specialized in helping foreigners living in Japan understand Japanese official documents, mail, and paperwork.
 
@@ -129,12 +182,13 @@ Respond ONLY in ${langName}. Never mix languages in your response except for Jap
 **⚠️ Important warnings**
 [Anything urgent or unusual]`
 
+    // ⑦ メッセージコンテンツを構築
     let messageContent: Anthropic.MessageParam['content']
 
     if (file) {
       const bytes = await file.arrayBuffer()
       const base64 = Buffer.from(bytes).toString('base64')
-      const mediaType = file.type as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp' | 'application/pdf'
+      const mediaType = file.type
 
       if (mediaType === 'application/pdf') {
         messageContent = [
@@ -157,7 +211,7 @@ Respond ONLY in ${langName}. Never mix languages in your response except for Jap
             type: 'image',
             source: {
               type: 'base64',
-              media_type: mediaType,
+              media_type: mediaType as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp',
               data: base64,
             },
           },
@@ -173,6 +227,7 @@ Respond ONLY in ${langName}. Never mix languages in your response except for Jap
       return NextResponse.json({ error: 'No file or text provided.' }, { status: 400 })
     }
 
+    // ⑧ AI生成
     const message = await client.messages.create({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 2048,
@@ -182,10 +237,11 @@ Respond ONLY in ${langName}. Never mix languages in your response except for Jap
 
     const result =
       message.content[0].type === 'text'
-        ? message.content[0].text + (DISCLAIMERS[language as keyof typeof DISCLAIMERS] || DISCLAIMERS.en)
+        ? message.content[0].text + (DISCLAIMERS[language] || DISCLAIMERS.en)
         : 'Could not analyze document.'
 
     return NextResponse.json({ result })
+
   } catch (e: any) {
     console.error('Analyze error:', e)
     return NextResponse.json({ error: e.message }, { status: 500 })

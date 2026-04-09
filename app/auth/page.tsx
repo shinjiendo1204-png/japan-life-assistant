@@ -14,19 +14,16 @@ function AuthContent() {
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    // ?mode=signup で来た場合はサインアップモードにする
     if (searchParams.get('mode') === 'signup') {
       setIsLogin(false)
     }
   }, [])
 
   const handleAfterAuth = async (userId: string) => {
-    // pendingPriceIdがあれば決済へ
     const pendingPriceId = localStorage.getItem('pendingPriceId')
     if (pendingPriceId) {
       localStorage.removeItem('pendingPriceId')
       localStorage.removeItem('pendingPlanName')
-
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -39,6 +36,25 @@ function AuthContent() {
       }
     }
     router.push('/')
+  }
+
+  const handleResetPassword = async () => {
+    if (!email) {
+      setMessage('Please enter your email address first.')
+      return
+    }
+    setLoading(true)
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/reset`,
+      })
+      if (error) throw error
+      setMessage('Check your email for a password reset link.')
+    } catch (e: any) {
+      setMessage(e.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleAuth = async () => {
@@ -65,13 +81,38 @@ function AuthContent() {
     }
   }
 
+  const isSignup = !isLogin
+  const fromAnalyze = searchParams.get('mode') === 'signup' || searchParams.get('from') === 'analyze'
+
   return (
     <main style={{ maxWidth: 400, margin: '4rem auto', padding: '0 1rem' }}>
-      <h1 style={{ fontSize: 22, fontWeight: 600, marginBottom: 8 }}>
-        Japan Life Assistant
+
+      <div style={{ fontSize: 20, fontWeight: 500, letterSpacing: '-0.5px', color: '#111', marginBottom: 24 }}>
+        Sort<span style={{ color: '#e53935' }}>Japan</span>
+      </div>
+
+      {fromAnalyze && (
+        <div style={{
+          background: '#f0f4ff',
+          border: '1px solid #c7d7ff',
+          borderRadius: 12,
+          padding: '14px 16px',
+          marginBottom: 20,
+        }}>
+          <div style={{ fontSize: 14, fontWeight: 500, color: '#1a3a8f', marginBottom: 4 }}>
+            Sign up to analyze your document
+          </div>
+          <div style={{ fontSize: 13, color: '#555', lineHeight: 1.5 }}>
+            Free plan includes 1 analysis per month — no credit card required.
+          </div>
+        </div>
+      )}
+
+      <h1 style={{ fontSize: 22, fontWeight: 500, marginBottom: 6, color: '#111' }}>
+        {isLogin ? 'Sign in' : 'Create your account'}
       </h1>
-      <p style={{ color: '#666', marginBottom: 24, fontSize: 14 }}>
-        {isLogin ? 'Sign in to your account' : 'Create a free account'}
+      <p style={{ color: '#888', marginBottom: 24, fontSize: 14 }}>
+        {isLogin ? 'Welcome back.' : 'Free — no credit card required.'}
       </p>
 
       <input
@@ -79,50 +120,91 @@ function AuthContent() {
         placeholder="Email"
         value={email}
         onChange={e => setEmail(e.target.value)}
+        onKeyDown={e => e.key === 'Enter' && handleAuth()}
         style={{
-          width: '100%', padding: '10px 12px', borderRadius: 8,
-          border: '1px solid #ddd', fontSize: 14, marginBottom: 10,
-          boxSizing: 'border-box' as const,
+          width: '100%', padding: '11px 14px', borderRadius: 10,
+          border: '1px solid #e0e0e0', fontSize: 14, marginBottom: 10,
+          boxSizing: 'border-box' as const, background: '#fafafa',
+          outline: 'none', color: '#111',
         }}
       />
+
       <input
         type="password"
         placeholder="Password"
         value={password}
         onChange={e => setPassword(e.target.value)}
+        onKeyDown={e => e.key === 'Enter' && handleAuth()}
         style={{
-          width: '100%', padding: '10px 12px', borderRadius: 8,
-          border: '1px solid #ddd', fontSize: 14, marginBottom: 16,
-          boxSizing: 'border-box' as const,
+          width: '100%', padding: '11px 14px', borderRadius: 10,
+          border: '1px solid #e0e0e0', fontSize: 14, marginBottom: 16,
+          boxSizing: 'border-box' as const, background: '#fafafa',
+          outline: 'none', color: '#111',
         }}
       />
 
       <button
         onClick={handleAuth}
-        disabled={loading}
+        disabled={loading || !email || !password}
         style={{
-          width: '100%', padding: 12, borderRadius: 8,
-          background: '#1a1a1a', color: '#fff', border: 'none',
-          fontSize: 15, fontWeight: 500, cursor: 'pointer', marginBottom: 12,
+          width: '100%', padding: 13, borderRadius: 10,
+          background: loading || !email || !password ? '#ccc' : '#111',
+          color: '#fff', border: 'none',
+          fontSize: 15, fontWeight: 500,
+          cursor: loading || !email || !password ? 'default' : 'pointer',
+          marginBottom: 10,
+          transition: 'background 0.12s',
         }}
       >
-        {loading ? 'Loading...' : isLogin ? 'Sign In' : 'Sign Up'}
+        {loading ? 'Loading...' : isLogin ? 'Sign in' : 'Sign up free'}
       </button>
 
-      <p style={{ textAlign: 'center', fontSize: 13, color: '#666' }}>
+      {isLogin && (
+        <p style={{ textAlign: 'center', fontSize: 12, color: '#aaa', marginBottom: 14 }}>
+          <span
+            onClick={handleResetPassword}
+            style={{ cursor: 'pointer', textDecoration: 'underline' }}
+          >
+            Forgot password?
+          </span>
+        </p>
+      )}
+
+      {isSignup && (
+        <div style={{
+          background: '#f7f7f7',
+          borderRadius: 10,
+          padding: '12px 14px',
+          marginBottom: 14,
+          fontSize: 12,
+          color: '#888',
+          lineHeight: 1.6,
+        }}>
+          Free plan: 1 document analysis per month ·{' '}
+          <span
+            onClick={() => router.push('/pricing')}
+            style={{ color: '#111', cursor: 'pointer', textDecoration: 'underline' }}
+          >
+            See all plans
+          </span>
+        </div>
+      )}
+
+      <p style={{ textAlign: 'center', fontSize: 13, color: '#888' }}>
         {isLogin ? "Don't have an account? " : 'Already have an account? '}
         <span
           onClick={() => setIsLogin(!isLogin)}
-          style={{ color: '#1a1a1a', cursor: 'pointer', textDecoration: 'underline' }}
+          style={{ color: '#111', cursor: 'pointer', textDecoration: 'underline' }}
         >
-          {isLogin ? 'Sign Up' : 'Sign In'}
+          {isLogin ? 'Sign up free' : 'Sign in'}
         </span>
       </p>
 
       {message && (
         <p style={{
-          marginTop: 12, fontSize: 13, color: '#666',
-          textAlign: 'center', padding: '10px', background: '#f5f5f5', borderRadius: 8,
+          marginTop: 14, fontSize: 13, color: '#555',
+          textAlign: 'center', padding: '10px',
+          background: '#f5f5f5', borderRadius: 8,
         }}>
           {message}
         </p>
