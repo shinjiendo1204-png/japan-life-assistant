@@ -228,10 +228,16 @@ Respond ONLY in ${langName}. Never mix languages in your response except for Jap
     const message = await client.messages.create({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 2048,
-      system: systemPrompt,
+      system: [
+        {
+          type: 'text',
+          text: systemPrompt,
+          cache_control: { type: 'ephemeral' },  // ← これだけ追加
+        }
+      ],
       messages: [{ role: 'user', content: messageContent }],
     })
-
+    
     const result =
       message.content[0].type === 'text'
         ? message.content[0].text + (DISCLAIMERS[language] || DISCLAIMERS.en)
