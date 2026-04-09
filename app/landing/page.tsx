@@ -15,26 +15,51 @@ const LANGUAGES = [
   { flag: '🇫🇷', label: 'Français' },
 ]
 
-const FEATURES = [
+const CATEGORIES = [
   {
-    icon: '📬',
-    title: 'Tax bills & pension notices',
-    desc: 'Understand exactly what you owe, when it\'s due, and how to pay — step by step.',
+    icon: '🏛️',
+    title: 'Official & government',
+    desc: 'Tax bills, pension notices, residence card renewal, city hall documents — with deadlines and payment steps.',
   },
   {
     icon: '🏠',
-    title: 'Rental contracts & move-in forms',
-    desc: 'Know what you\'re signing. Key money, deposit, cancellation terms — all explained.',
+    title: 'Housing & rental',
+    desc: 'Lease contracts, renewal notices, eviction warnings, repair requests — know your rights as a tenant.',
+  },
+  {
+    icon: '💼',
+    title: 'Work & business',
+    desc: 'Emails from your boss, salary slips, employment contracts, workplace notices — including cultural context.',
+  },
+  {
+    icon: '🏦',
+    title: 'Banking & finance',
+    desc: 'Bank notices, credit card bills, loan documents, automatic payment confirmations.',
   },
   {
     icon: '🏥',
-    title: 'Health insurance & city hall notices',
-    desc: 'Never miss a deadline or overpay because you didn\'t understand the document.',
+    title: 'Healthcare & medical',
+    desc: 'Hospital letters, prescriptions, health check results, insurance forms — explained in plain language.',
+  },
+  {
+    icon: '🏫',
+    title: 'School & education',
+    desc: 'School notices, event announcements, permission slips, PTA letters — never miss a deadline.',
+  },
+  {
+    icon: '💡',
+    title: 'Utilities & services',
+    desc: 'NHK, electricity, gas, water, internet, delivery notices — cancellation and change procedures too.',
+  },
+  {
+    icon: '🏘️',
+    title: 'Neighborhood & daily life',
+    desc: 'Building notices, community announcements, noise complaints, construction notices.',
   },
   {
     icon: '⚠️',
-    title: 'Urgent notices & payment reminders',
-    desc: 'Red envelope? Seizure notice? Know immediately how serious it is and what to do.',
+    title: 'Legal & urgent notices',
+    desc: 'Court documents, seizure warnings, formal demands — know exactly how serious it is and what to do.',
   },
 ]
 
@@ -43,7 +68,7 @@ export default function LandingPage() {
     <main style={{ maxWidth: 680, margin: '0 auto', padding: '1.5rem 1rem' }}>
 
       {/* ナビ */}
-      <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+      <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <Link href="/landing" style={{ fontSize: 20, fontWeight: 500, letterSpacing: '-0.5px', color: '#111', textDecoration: 'none' }}>
           Sort<span style={{ color: '#e53935' }}>Japan</span>
         </Link>
@@ -67,31 +92,31 @@ export default function LandingPage() {
       </nav>
 
       {/* ヒーロー */}
-      <div style={{ marginBottom: '3rem' }}>
+      <div style={{ marginBottom: '2rem' }}>
         <div style={{
           display: 'inline-block',
           fontSize: 11, fontWeight: 500,
           background: '#fff3f3', color: '#e53935',
           border: '1px solid #ffd0d0',
           borderRadius: 20, padding: '3px 12px',
-          marginBottom: 16, letterSpacing: '0.04em',
+          marginBottom: 14, letterSpacing: '0.04em',
         }}>
           Supports 12 languages
         </div>
         <h1 style={{
-          fontSize: 36, fontWeight: 500, lineHeight: 1.2,
-          color: '#111', marginBottom: 16, letterSpacing: '-0.5px',
+          fontSize: 34, fontWeight: 500, lineHeight: 1.2,
+          color: '#111', marginBottom: 14, letterSpacing: '-0.5px',
         }}>
-          Japanese documents,<br />explained instantly.
+          Any Japanese document,<br />explained instantly.
         </h1>
-        <p style={{ fontSize: 16, color: '#666', lineHeight: 1.7, maxWidth: 500, marginBottom: 28 }}>
-          Upload any Japanese mail, contract, or notice. Get a clear explanation
-          in your language — in seconds. No Japanese needed.
+        <p style={{ fontSize: 15, color: '#666', lineHeight: 1.7, maxWidth: 520, marginBottom: 22 }}>
+          Tax bills, work emails, rental contracts, hospital letters — upload anything in Japanese
+          and get a clear explanation in your language in seconds. No Japanese needed.
         </p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' as const }}>
           <Link href="/auth?mode=signup" style={{
             display: 'inline-block',
-            padding: '13px 28px', borderRadius: 12,
+            padding: '12px 26px', borderRadius: 12,
             background: '#111', color: '#fff',
             textDecoration: 'none', fontSize: 15, fontWeight: 500,
           }}>
@@ -99,7 +124,7 @@ export default function LandingPage() {
           </Link>
           <Link href="/pricing" style={{
             display: 'inline-block',
-            padding: '13px 22px', borderRadius: 12,
+            padding: '12px 20px', borderRadius: 12,
             background: 'transparent', color: '#555',
             textDecoration: 'none', fontSize: 14,
             border: '1px solid #e0e0e0',
@@ -107,7 +132,7 @@ export default function LandingPage() {
             See plans →
           </Link>
         </div>
-        <p style={{ fontSize: 12, color: '#bbb', marginTop: 10 }}>
+        <p style={{ fontSize: 12, color: '#bbb', marginTop: 8 }}>
           Free plan available · No credit card required
         </p>
       </div>
@@ -117,17 +142,18 @@ export default function LandingPage() {
         background: '#f7f7f7',
         borderRadius: 16,
         padding: '1.25rem',
-        marginBottom: '3rem',
+        marginBottom: '2rem',
         border: '0.5px solid #e8e8e8',
       }}>
         <div style={{ fontSize: 11, fontWeight: 500, color: '#aaa', textTransform: 'uppercase' as const, letterSpacing: '0.08em', marginBottom: 14 }}>
           Example result — 住民税通知書
         </div>
         {[
-          { icon: '📄', label: 'Document type', value: 'Resident tax notice (住民税通知書)' },
-          { icon: '📋', label: 'Summary', value: 'Annual tax bill from your city. Shows the total amount split into 4 installments.' },
+          { icon: '📄', label: 'Document type', value: 'Official · Resident tax notice (住民税通知書)' },
+          { icon: '📋', label: 'Summary', value: 'Annual tax bill from your city. Shows the total amount split into 4 installments throughout the year.' },
           { icon: '⏰', label: 'Deadline & amount', value: '¥52,000 total · First payment due June 30' },
-          { icon: '✅', label: 'What to do', value: 'Pay at any convenience store using the barcode on the slip.' },
+          { icon: '✅', label: 'What to do', value: '1. Take the slip to any convenience store. 2. Show the barcode at the register. 3. Pay in cash. Done.' },
+          { icon: '💡', label: 'Cultural context', value: 'This is normal — everyone in Japan pays this. Ignoring it leads to penalties and eventually asset seizure.' },
         ].map(item => (
           <div key={item.label} style={{
             borderBottom: '0.5px solid #ebebeb',
@@ -144,29 +170,44 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* 機能 */}
-      <div style={{ marginBottom: '3rem' }}>
+      {/* カテゴリ一覧 */}
+      <div style={{ marginBottom: '2rem' }}>
         <div style={{ fontSize: 11, fontWeight: 500, color: '#aaa', textTransform: 'uppercase' as const, letterSpacing: '0.08em', marginBottom: 16 }}>
           What we handle
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
-          {FEATURES.map(f => (
-            <div key={f.title} style={{
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10 }}>
+          {CATEGORIES.map(cat => (
+            <div key={cat.title} style={{
               background: '#fafafa',
               borderRadius: 12,
-              padding: '1rem',
+              padding: '0.875rem 1rem',
               border: '0.5px solid #ebebeb',
             }}>
-              <div style={{ fontSize: 22, marginBottom: 8 }}>{f.icon}</div>
-              <div style={{ fontSize: 13, fontWeight: 500, color: '#111', marginBottom: 4 }}>{f.title}</div>
-              <div style={{ fontSize: 12, color: '#777', lineHeight: 1.5 }}>{f.desc}</div>
+              <div style={{ fontSize: 18, marginBottom: 6 }}>{cat.icon}</div>
+              <div style={{ fontSize: 13, fontWeight: 500, color: '#111', marginBottom: 3 }}>{cat.title}</div>
+              <div style={{ fontSize: 11, color: '#888', lineHeight: 1.5 }}>{cat.desc}</div>
             </div>
           ))}
+          {/* 9番目が奇数なのでフルwidth */}
+          <div style={{
+            gridColumn: '1 / -1',
+            background: '#fff3f3',
+            borderRadius: 12,
+            padding: '0.875rem 1rem',
+            border: '0.5px solid #ffd0d0',
+            display: 'flex', alignItems: 'flex-start', gap: 12,
+          }}>
+            <div style={{ fontSize: 18, flexShrink: 0 }}>⚠️</div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 500, color: '#c62828', marginBottom: 3 }}>Legal & urgent notices</div>
+              <div style={{ fontSize: 11, color: '#888', lineHeight: 1.5 }}>Court documents, seizure warnings, formal demands — know exactly how serious it is and what to do next.</div>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* 言語 */}
-      <div style={{ marginBottom: '3rem' }}>
+      <div style={{ marginBottom: '2rem' }}>
         <div style={{ fontSize: 11, fontWeight: 500, color: '#aaa', textTransform: 'uppercase' as const, letterSpacing: '0.08em', marginBottom: 14 }}>
           12 languages supported
         </div>
@@ -185,7 +226,7 @@ export default function LandingPage() {
       </div>
 
       {/* 料金 */}
-      <div style={{ marginBottom: '3rem' }}>
+      <div style={{ marginBottom: '2rem' }}>
         <div style={{ fontSize: 11, fontWeight: 500, color: '#aaa', textTransform: 'uppercase' as const, letterSpacing: '0.08em', marginBottom: 16 }}>
           Pricing
         </div>
@@ -243,8 +284,8 @@ export default function LandingPage() {
         <div style={{ fontSize: 20, fontWeight: 500, color: '#fff', marginBottom: 8 }}>
           Stop guessing. Start understanding.
         </div>
-        <div style={{ fontSize: 14, color: '#aaa', marginBottom: 20 }}>
-          Join foreigners in Japan who no longer stress about mail.
+        <div style={{ fontSize: 14, color: '#999', marginBottom: 20, lineHeight: 1.6 }}>
+          From tax bills to work emails —<br />everything in Japanese, explained in your language.
         </div>
         <Link href="/auth?mode=signup" style={{
           display: 'inline-block',
