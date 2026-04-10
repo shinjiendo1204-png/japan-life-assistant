@@ -196,7 +196,7 @@ function AuthContent() {
           onClick={() => setIsLogin(!isLogin)}
           style={{ color: '#111', cursor: 'pointer', textDecoration: 'underline' }}
         >
-          {isLogin ? 'Sign up free' : 'Sign in'}
+          {isLogin ? 'Sign up' : 'Sign in'}
         </span>
       </p>
 
