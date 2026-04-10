@@ -34,10 +34,9 @@ const UI: Record<string, Record<string, string>> = {
     analyzing: 'Analyzing...',
     copy: 'Copy result',
     copied: 'Copied!',
-    plans: 'Plans',
     signout: 'Sign out',
     freeLimitTitle: 'Free plan limit reached',
-    freeLimitDesc: 'Upgrade to Standard for unlimited document analysis ($15/month)',
+    freeLimitDesc: 'Upgrade to Standard for 30 analyses per month ($15/month)',
     upgrade: 'Upgrade now',
     disclaimer: 'This analysis is for reference only. Confirm with the relevant office before taking action.',
     resultLabel: 'Result',
@@ -57,10 +56,9 @@ const UI: Record<string, Record<string, string>> = {
     analyzing: 'Analizando...',
     copy: 'Copiar resultado',
     copied: '¡Copiado!',
-    plans: 'Planes',
     signout: 'Cerrar sesión',
     freeLimitTitle: 'Límite del plan gratuito alcanzado',
-    freeLimitDesc: 'Actualiza a Standard para análisis ilimitado ($15/mes)',
+    freeLimitDesc: 'Actualiza a Standard para 30 análisis por mes ($15/mes)',
     upgrade: 'Actualizar ahora',
     disclaimer: 'Este análisis es solo de referencia. Confirme con la oficina correspondiente antes de actuar.',
     resultLabel: 'Resultado',
@@ -80,10 +78,9 @@ const UI: Record<string, Record<string, string>> = {
     analyzing: 'Analisando...',
     copy: 'Copiar resultado',
     copied: 'Copiado!',
-    plans: 'Planos',
     signout: 'Sair',
     freeLimitTitle: 'Limite do plano gratuito atingido',
-    freeLimitDesc: 'Atualize para Standard para análise ilimitada ($15/mês)',
+    freeLimitDesc: 'Atualize para Standard para 30 análises por mês ($15/mês)',
     upgrade: 'Atualizar agora',
     disclaimer: 'Esta análise é apenas para referência. Confirme com o escritório relevante antes de agir.',
     resultLabel: 'Resultado',
@@ -103,10 +100,9 @@ const UI: Record<string, Record<string, string>> = {
     analyzing: '分析中...',
     copy: '复制结果',
     copied: '已复制！',
-    plans: '套餐',
     signout: '退出登录',
     freeLimitTitle: '已达到免费计划限制',
-    freeLimitDesc: '升级到Standard享受无限文件分析（每月$15）',
+    freeLimitDesc: '升级到Standard，每月30次分析（每月$15）',
     upgrade: '立即升级',
     disclaimer: '此分析仅供参考。行动前请向相关机构确认。',
     resultLabel: '结果',
@@ -126,10 +122,9 @@ const UI: Record<string, Record<string, string>> = {
     analyzing: '분석 중...',
     copy: '결과 복사',
     copied: '복사됨!',
-    plans: '요금제',
     signout: '로그아웃',
     freeLimitTitle: '무료 플랜 한도 도달',
-    freeLimitDesc: 'Standard로 업그레이드하여 무제한 분석 ($15/월)',
+    freeLimitDesc: 'Standard로 업그레이드하여 월 30회 분석 ($15/월)',
     upgrade: '지금 업그레이드',
     disclaimer: '이 분석은 참고용입니다. 조치 전에 관련 기관에 확인하세요.',
     resultLabel: '결과',
@@ -149,10 +144,9 @@ const UI: Record<string, Record<string, string>> = {
     analyzing: 'Đang phân tích...',
     copy: 'Sao chép kết quả',
     copied: 'Đã sao chép!',
-    plans: 'Gói dịch vụ',
     signout: 'Đăng xuất',
     freeLimitTitle: 'Đã đạt giới hạn gói miễn phí',
-    freeLimitDesc: 'Nâng cấp lên Standard để phân tích không giới hạn ($15/tháng)',
+    freeLimitDesc: 'Nâng cấp lên Standard để phân tích 30 lần/tháng ($15/tháng)',
     upgrade: 'Nâng cấp ngay',
     disclaimer: 'Phân tích này chỉ để tham khảo. Xác nhận với cơ quan liên quan trước khi hành động.',
     resultLabel: 'Kết quả',
@@ -172,10 +166,9 @@ const UI: Record<string, Record<string, string>> = {
     analyzing: 'Sinusuri...',
     copy: 'Kopyahin ang resulta',
     copied: 'Nakopya na!',
-    plans: 'Mga Plano',
     signout: 'Mag-sign out',
     freeLimitTitle: 'Naabot na ang limitasyon ng libreng plano',
-    freeLimitDesc: 'Mag-upgrade sa Standard para sa walang limitasyong pagsusuri ($15/buwan)',
+    freeLimitDesc: 'Mag-upgrade sa Standard para sa 30 pagsusuri/buwan ($15/buwan)',
     upgrade: 'Mag-upgrade ngayon',
     disclaimer: 'Ang pagsusuring ito ay para sa sanggunian lamang. Kumpirmahin sa kaugnay na tanggapan bago kumilos.',
     resultLabel: 'Resulta',
@@ -195,10 +188,9 @@ const UI: Record<string, Record<string, string>> = {
     analyzing: 'विश्लेषण गर्दै...',
     copy: 'नतिजा प्रतिलिपि गर्नुहोस्',
     copied: 'प्रतिलिपि भयो!',
-    plans: 'योजनाहरू',
     signout: 'साइन आउट',
     freeLimitTitle: 'निःशुल्क योजनाको सीमा पुग्यो',
-    freeLimitDesc: 'असीमित विश्लेषणको लागि Standard मा अपग्रेड गर्नुहोस् ($15/महिना)',
+    freeLimitDesc: 'महिनामा ३० विश्लेषणको लागि Standard मा अपग्रेड गर्नुहोस् ($15/महिना)',
     upgrade: 'अहिले अपग्रेड गर्नुहोस्',
     disclaimer: 'यो विश्लेषण केवल सन्दर्भको लागि हो। कार्य गर्नु अघि सम्बन्धित कार्यालयसँग पुष्टि गर्नुहोस्।',
     resultLabel: 'नतिजा',
@@ -218,10 +210,9 @@ const UI: Record<string, Record<string, string>> = {
     analyzing: 'Menganalisis...',
     copy: 'Salin hasil',
     copied: 'Disalin!',
-    plans: 'Paket',
     signout: 'Keluar',
     freeLimitTitle: 'Batas paket gratis tercapai',
-    freeLimitDesc: 'Upgrade ke Standard untuk analisis tanpa batas ($15/bulan)',
+    freeLimitDesc: 'Upgrade ke Standard untuk 30 analisis/bulan ($15/bulan)',
     upgrade: 'Upgrade sekarang',
     disclaimer: 'Analisis ini hanya untuk referensi. Konfirmasi dengan kantor terkait sebelum mengambil tindakan.',
     resultLabel: 'Hasil',
@@ -241,17 +232,16 @@ const UI: Record<string, Record<string, string>> = {
     analyzing: 'กำลังวิเคราะห์...',
     copy: 'คัดลอกผลลัพธ์',
     copied: 'คัดลอกแล้ว!',
-    plans: 'แผนบริการ',
     signout: 'ออกจากระบบ',
     freeLimitTitle: 'ถึงขีดจำกัดแผนฟรีแล้ว',
-    freeLimitDesc: 'อัปเกรดเป็น Standard สำหรับการวิเคราะห์ไม่จำกัด ($15/เดือน)',
+    freeLimitDesc: 'อัปเกรดเป็น Standard สำหรับ 30 ครั้ง/เดือน ($15/เดือน)',
     upgrade: 'อัปเกรดตอนนี้',
     disclaimer: 'การวิเคราะห์นี้เพื่อการอ้างอิงเท่านั้น ยืนยันกับสำนักงานที่เกี่ยวข้องก่อนดำเนินการ',
     resultLabel: 'ผลลัพธ์',
   },
   my: {
     tagline: 'ဂျပန်စာရွက်စာတမ်း၊ ချက်ချင်းရှင်းပြ။',
-    subtitle: 'ဂျပန်စာပေးစာ၊ စာချုပ် သို့မဟုတ် ကြေညာချက်မဆို အပ်လုဒ်လုပ်ပါ။ မိမိဘာသာစကားဖြင့် ရှင်းလင်းသောရှင်းပြချက်ကို ဆောင်ရွက်ချက်များနှင့်တကွ ရယူပါ',
+    subtitle: 'ဂျပန်စာပေးစာ၊ စာချုပ် သို့မဟုတ် ကြေညာချက်မဆို အပ်လုဒ်လုပ်ပါ။ မိမိဘာသာစကားဖြင့် ရှင်းလင်းသောရှင်းပြချက်ကို ရယူပါ',
     langLabel: 'ဘာသာစကား',
     docLabel: 'စာရွက်စာတမ်း',
     uploadTab: 'ဖိုင်တင်မည်',
@@ -264,10 +254,9 @@ const UI: Record<string, Record<string, string>> = {
     analyzing: 'စစ်ဆေးနေသည်...',
     copy: 'ရလဒ်ကူးယူ',
     copied: 'ကူးယူပြီး!',
-    plans: 'အစီအစဉ်',
     signout: 'ထွက်မည်',
     freeLimitTitle: 'အခမဲ့အစီအစဉ်ကန့်သတ်ချက်ပြည့်သွားပြီ',
-    freeLimitDesc: 'အကန့်အသတ်မဲ့ စစ်ဆေးမှုအတွက် Standard သို့ အဆင့်မြှင့်ပါ ($15/လ)',
+    freeLimitDesc: 'တစ်လလျှင် ၃၀ ကြိမ်စစ်ဆေးရန် Standard သို့ အဆင့်မြှင့်ပါ ($15/လ)',
     upgrade: 'ယခုအဆင့်မြှင့်ပါ',
     disclaimer: 'ဤစစ်ဆေးချက်သည် ကိုးကားရန်သာဖြစ်သည်။ ဆောင်ရွက်မည်ဆိုပါက သက်ဆိုင်ရာရုံးနှင့် အတည်ပြုပါ။',
     resultLabel: 'ရလဒ်',
@@ -287,10 +276,9 @@ const UI: Record<string, Record<string, string>> = {
     analyzing: 'Analyse en cours...',
     copy: 'Copier le résultat',
     copied: 'Copié !',
-    plans: 'Forfaits',
     signout: 'Se déconnecter',
     freeLimitTitle: 'Limite du forfait gratuit atteinte',
-    freeLimitDesc: 'Passez à Standard pour une analyse illimitée (15$/mois)',
+    freeLimitDesc: 'Passez à Standard pour 30 analyses par mois (15$/mois)',
     upgrade: 'Mettre à niveau',
     disclaimer: 'Cette analyse est à titre indicatif uniquement. Confirmez auprès du bureau compétent avant d\'agir.',
     resultLabel: 'Résultat',
@@ -299,6 +287,7 @@ const UI: Record<string, Record<string, string>> = {
 
 export default function Home() {
   const [authLoading, setAuthLoading] = useState(true)
+  const [plan, setPlan] = useState<string>('free')           // ← 追加：プラン管理
   const [language, setLanguage] = useState('en')
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
@@ -322,24 +311,32 @@ export default function Home() {
     marginBottom: 10,
   }
 
-    useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) router.push('/landing')
-      else setAuthLoading(false)
+  useEffect(() => {
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!user) {
+        router.push('/landing')
+      } else {
+        setAuthLoading(false)
+        // プランを取得してstateに保存
+        const { data } = await supabase
+          .from('profiles')
+          .select('plan')
+          .eq('id', user.id)
+          .single()
+        if (data?.plan) setPlan(data.plan)
+      }
     })
   }, [])
 
-
   const handleFile = (f: File) => {
-  // 10MB制限
-  if (f.size > 10 * 1024 * 1024) {
-    setOutput('File is too large. Please upload a file under 10MB.')
-    return
+    if (f.size > 10 * 1024 * 1024) {
+      setOutput('File is too large. Please upload a file under 10MB.')
+      return
+    }
+    setFile(f)
+    setOutput('')
+    setPreview(f.type.startsWith('image/') ? URL.createObjectURL(f) : null)
   }
-  setFile(f)
-  setOutput('')
-  setPreview(f.type.startsWith('image/') ? URL.createObjectURL(f) : null)
-}
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
@@ -349,45 +346,43 @@ export default function Home() {
   }
 
   const handlePortal = async () => {
-  try {
-    const { data: { session } } = await supabase.auth.getSession()
-    const res = await fetch('/api/portal', {
-      method: 'POST',
-      headers: session ? { 'Authorization': `Bearer ${session.access_token}` } : {},
-    })
-    const data = await res.json()
-    if (data.url) window.location.href = data.url
-    else alert(data.error || 'Could not open billing portal.')
-  } catch {
-    alert('Error opening billing portal.')
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      const res = await fetch('/api/portal', {
+        method: 'POST',
+        headers: session ? { 'Authorization': `Bearer ${session.access_token}` } : {},
+      })
+      const data = await res.json()
+      if (data.url) window.location.href = data.url
+      else alert(data.error || 'Could not open billing portal.')
+    } catch {
+      alert('Error opening billing portal.')
+    }
   }
-}
 
   const handleAnalyze = async () => {
-  if (!file && !text.trim()) return
-  setLoading(true)
-  setOutput('')
-  try {
-    const { data: { session } } = await supabase.auth.getSession()
-
-    const formData = new FormData()
-    if (file) formData.append('file', file)
-    if (text) formData.append('text', text)
-    formData.append('language', language)
-
-    const res = await fetch('/api/analyze', {
-      method: 'POST',
-      headers: session ? { 'Authorization': `Bearer ${session.access_token}` } : {},
-      body: formData,
-    })
-    const data = await res.json()
-    setOutput(data.error === 'FREE_LIMIT_REACHED' ? '__FREE_LIMIT__' : data.result || data.error)
-  } catch {
-    setOutput('Error occurred. Please try again.')
-  } finally {
-    setLoading(false)
+    if (!file && !text.trim()) return
+    setLoading(true)
+    setOutput('')
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      const formData = new FormData()
+      if (file) formData.append('file', file)
+      if (text) formData.append('text', text)
+      formData.append('language', language)
+      const res = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: session ? { 'Authorization': `Bearer ${session.access_token}` } : {},
+        body: formData,
+      })
+      const data = await res.json()
+      setOutput(data.error === 'FREE_LIMIT_REACHED' ? '__FREE_LIMIT__' : data.result || data.error)
+    } catch {
+      setOutput('Error occurred. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
-}
 
   const handleCopy = () => {
     navigator.clipboard.writeText(output)
@@ -396,49 +391,65 @@ export default function Home() {
   }
 
   if (authLoading) return (
-  <main style={{ maxWidth: 680, margin: '0 auto', padding: '1.5rem 1rem' }}>
-    <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-      <div
-        onClick={() => router.push('/')}
-        style={{ fontSize: 22, fontWeight: 500, letterSpacing: '-0.5px', color: '#111', cursor: 'pointer' }}
-      >
-        Sort<span style={{ color: '#e53935' }}>Japan</span>
-      </div>
-    </nav>
-    <div style={{ marginBottom: '2rem' }}>
-      <h1 style={{ fontSize: 28, fontWeight: 500, lineHeight: 1.3, color: '#111', marginBottom: 10 }}>
-        Japanese documents, explained instantly.
-      </h1>
-      <p style={{ fontSize: 15, color: '#666', lineHeight: 1.6 }}>
-        Upload any Japanese mail, contract, or notice.
-      </p>
-    </div>
-    <div style={{ width: '100%', height: 200, background: '#f7f7f7', borderRadius: 14, 
-      display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ fontSize: 13, color: '#bbb' }}>Loading...</div>
-    </div>
-  </main>
-)
-
-  const canAnalyze = inputMode === 'upload' ? !!file : !!text.trim()
-
-  return (
     <main style={{ maxWidth: 680, margin: '0 auto', padding: '1.5rem 1rem' }}>
-
       <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <div style={{ fontSize: 22, fontWeight: 500, letterSpacing: '-0.5px', color: '#111' }}>
           Sort<span style={{ color: '#e53935' }}>Japan</span>
         </div>
+      </nav>
+      <div style={{ marginBottom: '2rem' }}>
+        <h1 style={{ fontSize: 28, fontWeight: 500, lineHeight: 1.3, color: '#111', marginBottom: 10 }}>
+          Japanese documents, explained instantly.
+        </h1>
+        <p style={{ fontSize: 15, color: '#666', lineHeight: 1.6 }}>
+          Upload any Japanese mail, contract, or notice.
+        </p>
+      </div>
+      <div style={{ width: '100%', height: 200, background: '#f7f7f7', borderRadius: 14,
+        display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ fontSize: 13, color: '#bbb' }}>Loading...</div>
+      </div>
+    </main>
+  )
+
+  const canAnalyze = inputMode === 'upload' ? !!file : !!text.trim()
+  const isStandard = plan === 'standard'
+
+  return (
+    <main style={{ maxWidth: 680, margin: '0 auto', padding: '1.5rem 1rem' }}>
+
+      {/* ナビゲーション */}
+      <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <div
+          onClick={() => router.push('/')}
+          style={{ fontSize: 22, fontWeight: 500, letterSpacing: '-0.5px', color: '#111', cursor: 'pointer' }}
+        >
+          Sort<span style={{ color: '#e53935' }}>Japan</span>
+        </div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          {/* Standardユーザーにはアップグレードボタンを表示しない */}
+          {!isStandard && (
+            <button
+              onClick={() => router.push('/pricing')}
+              style={{
+                fontSize: 13, padding: '7px 16px', borderRadius: 20,
+                border: 'none', background: '#111', color: '#fff',
+                cursor: 'pointer', fontWeight: 500,
+              }}
+            >
+              ✦ Upgrade
+            </button>
+          )}
+          {/* Accountボタン：クリックでStripe Customer Portal（解約・支払い管理） */}
           <button
-            onClick={() => router.push('/pricing')}
+            onClick={handlePortal}
             style={{
               fontSize: 13, padding: '7px 16px', borderRadius: 20,
-              border: 'none', background: '#111', color: '#fff',
-              cursor: 'pointer', fontWeight: 500,
+              border: '1px solid #ddd', background: 'transparent', color: '#666',
+              cursor: 'pointer',
             }}
           >
-            ✦ Upgrade
+            Account
           </button>
           <button
             onClick={() => supabase.auth.signOut().then(() => router.push('/auth'))}
@@ -452,7 +463,6 @@ export default function Home() {
           </button>
         </div>
       </nav>
-
 
       {/* ヒーロー */}
       <div style={{ marginBottom: '2rem' }}>
@@ -616,9 +626,9 @@ export default function Home() {
         {loading ? t.analyzing : t.analyze}
       </button>
 
-       {output === '__FREE_LIMIT__' ? (
+      {/* 結果 */}
+      {output === '__FREE_LIMIT__' ? (
         <div>
-          {/* 使用制限バナー */}
           <div style={{
             background: '#111',
             borderRadius: 14,
@@ -627,65 +637,68 @@ export default function Home() {
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
               <div>
+                {/* Standardユーザーには「月間上限」、Freeユーザーには「フリープラン上限」メッセージ */}
                 <div style={{ fontSize: 15, fontWeight: 500, color: '#fff', marginBottom: 4 }}>
-                  {t.freeLimitTitle}
+                  {isStandard
+                    ? 'Monthly limit reached (30/30)'
+                    : t.freeLimitTitle
+                  }
                 </div>
                 <div style={{ fontSize: 13, color: '#aaa', lineHeight: 1.5, marginBottom: 14 }}>
-                  {t.freeLimitDesc}
+                  {isStandard
+                    ? 'Your 30 analyses for this month are used up. Your limit resets on the 1st of next month.'
+                    : t.freeLimitDesc
+                  }
                 </div>
-                <button
-            onClick={handlePortal}
-            style={{
-              fontSize: 13, padding: '7px 16px', borderRadius: 20,
-              border: '1px solid #ddd', background: 'transparent', color: '#666',
-              cursor: 'pointer',
-            }}
-          >
-            Account
-          </button>
-                <button
-                  onClick={() => router.push('/pricing')}
-                  style={{
-                    padding: '9px 20px', borderRadius: 8,
-                    background: '#fff', color: '#111',
-                    border: 'none', fontSize: 13, fontWeight: 500, cursor: 'pointer',
-                  }}
-                >
-                  {t.upgrade} →
-                </button>
+                {/* Freeユーザーにのみアップグレードボタンを表示 */}
+                {!isStandard && (
+                  <button
+                    onClick={() => router.push('/pricing')}
+                    style={{
+                      padding: '9px 20px', borderRadius: 8,
+                      background: '#fff', color: '#111',
+                      border: 'none', fontSize: 13, fontWeight: 500, cursor: 'pointer',
+                    }}
+                  >
+                    {t.upgrade} →
+                  </button>
+                )}
               </div>
-              <div style={{ fontSize: 36, flexShrink: 0 }}>🔓</div>
+              <div style={{ fontSize: 36, flexShrink: 0 }}>
+                {isStandard ? '📅' : '🔓'}
+              </div>
             </div>
           </div>
 
-          {/* Standardの特典リスト */}
-          <div style={{
-            background: '#f7f7f7',
-            borderRadius: 12,
-            padding: '1rem',
-            border: '0.5px solid #e8e8e8',
-          }}>
-            <div style={{ fontSize: 11, fontWeight: 500, color: '#aaa', textTransform: 'uppercase' as const, letterSpacing: '0.06em', marginBottom: 10 }}>
-              Standard plan — $15/month
-            </div>
-            {[
-              '30 document analyses per month',
-              'All 12 languages supported',
-              'Image, PDF & text paste',
-              'Cancel anytime',
-            ].map(item => (
-              <div key={item} style={{
-                display: 'flex', alignItems: 'center', gap: 8,
-                fontSize: 13, color: '#444', padding: '4px 0',
-              }}>
-                <span style={{ color: '#4caf50', fontWeight: 500 }}>✓</span>
-                {item}
+          {/* Freeユーザーにのみ特典リストを表示 */}
+          {!isStandard && (
+            <div style={{
+              background: '#f7f7f7',
+              borderRadius: 12,
+              padding: '1rem',
+              border: '0.5px solid #e8e8e8',
+            }}>
+              <div style={{ fontSize: 11, fontWeight: 500, color: '#aaa', textTransform: 'uppercase' as const, letterSpacing: '0.06em', marginBottom: 10 }}>
+                Standard plan — $15/month
               </div>
-            ))}
-          </div>
+              {[
+                '30 document analyses per month',
+                'All 12 languages supported',
+                'Image, PDF & text paste',
+                'Cancel anytime',
+              ].map(item => (
+                <div key={item} style={{
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  fontSize: 13, color: '#444', padding: '4px 0',
+                }}>
+                  <span style={{ color: '#4caf50', fontWeight: 500 }}>✓</span>
+                  {item}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       ) : output ? (
-
         <div>
           <div style={sectionLabel}>{t.resultLabel}</div>
           <div style={{
