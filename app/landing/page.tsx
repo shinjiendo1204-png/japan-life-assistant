@@ -56,11 +56,6 @@ const CATEGORIES = [
     title: 'Neighborhood & daily life',
     desc: 'Building notices, community announcements, noise complaints, construction notices.',
   },
-  {
-    icon: '⚠️',
-    title: 'Legal & urgent notices',
-    desc: 'Court documents, seizure warnings, formal demands — know exactly how serious it is and what to do.',
-  },
 ]
 
 export default function LandingPage() {
@@ -149,11 +144,13 @@ export default function LandingPage() {
           Example result — 住民税通知書
         </div>
         {[
-          { icon: '📄', label: 'Document type', value: 'Official · Resident tax notice (住民税通知書)' },
+          { icon: '📄', label: 'Document type', value: 'Official / Government · Resident tax notice (住民税通知書)' },
           { icon: '📋', label: 'Summary', value: 'Annual tax bill from your city. Shows the total amount split into 4 installments throughout the year.' },
           { icon: '⏰', label: 'Deadline & amount', value: '¥52,000 total · First payment due June 30' },
-          { icon: '✅', label: 'What to do', value: '1. Take the slip to any convenience store. 2. Show the barcode at the register. 3. Pay in cash. Done.' },
-          { icon: '💡', label: 'Cultural context', value: 'This is normal — everyone in Japan pays this. Ignoring it leads to penalties and eventually asset seizure.' },
+          { icon: '✅', label: 'What you need to do', value: '1. Find the barcode slip inside the envelope. 2. Take it to any convenience store (7-Eleven, Lawson, FamilyMart). 3. Show the barcode at the register and pay cash.' },
+          { icon: '💳', label: 'How to pay / respond', value: 'Convenience store barcode (easiest) · Bank transfer (口座振替) · City hall in person · Online banking if available.' },
+          { icon: '⚠️', label: 'Important warnings', value: 'Urgency: Normal. Missing the deadline adds a late fee (~5%). Repeated non-payment leads to wage/asset seizure.' },
+          { icon: '💡', label: 'Cultural context', value: 'This is standard — all residents pay this, including foreigners. Calculated based on your previous year\'s income.' },
         ].map(item => (
           <div key={item.label} style={{
             borderBottom: '0.5px solid #ebebeb',
@@ -166,7 +163,7 @@ export default function LandingPage() {
           </div>
         ))}
         <div style={{ fontSize: 11, color: '#bbb', marginTop: 4 }}>
-          ⚠️ This analysis is for reference only.
+          ⚠️ For reference only. Confirm with the relevant office before taking action.
         </div>
       </div>
 
@@ -188,7 +185,7 @@ export default function LandingPage() {
               <div style={{ fontSize: 11, color: '#888', lineHeight: 1.5 }}>{cat.desc}</div>
             </div>
           ))}
-          {/* 9番目が奇数なのでフルwidth */}
+          {/* Legal & urgent — フルwidth・赤背景で目立たせる */}
           <div style={{
             gridColumn: '1 / -1',
             background: '#fff3f3',
@@ -231,6 +228,8 @@ export default function LandingPage() {
           Pricing
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+
+          {/* Free */}
           <div style={{
             border: '1px solid #e8e8e8', borderRadius: 14,
             padding: '1.25rem', background: '#fff',
@@ -247,6 +246,8 @@ export default function LandingPage() {
               Get started
             </Link>
           </div>
+
+          {/* Standard — Subscribeは/pricingへ → Stripe決済フローに乗る */}
           <div style={{
             border: '2px solid #111', borderRadius: 14,
             padding: '1.25rem', background: '#fff',
@@ -263,7 +264,7 @@ export default function LandingPage() {
             <div style={{ fontSize: 14, fontWeight: 500, color: '#111', marginBottom: 8 }}>Standard</div>
             <div style={{ fontSize: 28, fontWeight: 500, color: '#111', marginBottom: 4 }}>$15</div>
             <div style={{ fontSize: 12, color: '#aaa', marginBottom: 12 }}>30 analyses / month</div>
-            <Link href="/auth?mode=signup" style={{
+            <Link href="/pricing" style={{
               display: 'block', textAlign: 'center' as const,
               padding: '9px', borderRadius: 8,
               background: '#111', color: '#fff',
@@ -272,6 +273,7 @@ export default function LandingPage() {
               Subscribe
             </Link>
           </div>
+
         </div>
       </div>
 
