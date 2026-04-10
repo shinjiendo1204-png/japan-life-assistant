@@ -319,16 +319,24 @@ useEffect(() => {
     if (!user) {
       router.push('/landing')
     } else {
-      setAuthLoading(false)
-      // プランと使用回数を取得
-      const { data } = await supabase
-        .from('profiles')
-        .select('plan, usage_count') // usage_countを追加
-        .eq('id', user.id)
-        .single()
-      
-      if (data?.plan) setPlan(data.plan)
-      if (data?.usage_count) setUsageCount(data.usage_count)
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('plan, usage_count')
+          .eq('id', user.id)
+          .single()
+        
+        // データが見つかればセット。エラー（見つからない）でも止まらないようにする
+        if (data) {
+          setPlan(data.plan || 'free')
+          setUsageCount(data.usage_count || 0)
+        }
+      } catch (err) {
+        console.error("Profile fetch error:", err)
+      } finally {
+        // 何があっても、ユーザー認証自体は終わっているのでLoadingは解除する
+        setAuthLoading(false)
+      }
     }
   })
 }, [])

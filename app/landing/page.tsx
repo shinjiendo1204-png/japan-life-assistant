@@ -102,7 +102,7 @@ export default function LandingPage() {
           fontSize: 34, fontWeight: 500, lineHeight: 1.2,
           color: '#111', marginBottom: 14, letterSpacing: '-0.5px',
         }}>
-          Any Japanese document,<br />explained instantly.
+          Any Japanese documents,<br />explained instantly.
         </h1>
         <p style={{ fontSize: 15, color: '#666', lineHeight: 1.7, maxWidth: 520, marginBottom: 22 }}>
           Tax bills, work emails, rental contracts, hospital letters — upload anything in Japanese
