@@ -29,6 +29,7 @@ export default function RootLayout({
                 <a href="/disclaimer" style={{ fontSize: 12, color: '#888', textDecoration: 'none' }}>Disclaimer</a>
                 <a href="/privacy" style={{ fontSize: 12, color: '#888', textDecoration: 'none' }}>Privacy Policy</a>
                 <a href="/terms" style={{ fontSize: 12, color: '#888', textDecoration: 'none' }}>Terms of Service</a>
+                <a href="/legal" style={{ fontSize: 12, color: '#888', textDecoration: 'none' }}>Legal Notice</a>
                 <a href="mailto:support@sortjapan.com" style={{ fontSize: 12, color: '#888', textDecoration: 'none' }}>Contact</a>
               </div>
             </div>

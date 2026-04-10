@@ -311,22 +311,27 @@ export default function Home() {
     marginBottom: 10,
   }
 
-  useEffect(() => {
-    supabase.auth.getUser().then(async ({ data: { user } }) => {
-      if (!user) {
-        router.push('/landing')
-      } else {
-        setAuthLoading(false)
-        // プランを取得してstateに保存
-        const { data } = await supabase
-          .from('profiles')
-          .select('plan')
-          .eq('id', user.id)
-          .single()
-        if (data?.plan) setPlan(data.plan)
-      }
-    })
-  }, [])
+  // stateを追加
+const [usageCount, setUsageCount] = useState(0)
+
+useEffect(() => {
+  supabase.auth.getUser().then(async ({ data: { user } }) => {
+    if (!user) {
+      router.push('/landing')
+    } else {
+      setAuthLoading(false)
+      // プランと使用回数を取得
+      const { data } = await supabase
+        .from('profiles')
+        .select('plan, usage_count') // usage_countを追加
+        .eq('id', user.id)
+        .single()
+      
+      if (data?.plan) setPlan(data.plan)
+      if (data?.usage_count) setUsageCount(data.usage_count)
+    }
+  })
+}, [])
 
   const handleFile = (f: File) => {
     if (f.size > 10 * 1024 * 1024) {
@@ -346,6 +351,8 @@ export default function Home() {
   }
 
   const handlePortal = async () => {
+  // StandardプランならStripeの管理画面へ
+  if (isStandard) {
     try {
       const { data: { session } } = await supabase.auth.getSession()
       const res = await fetch('/api/portal', {
@@ -358,7 +365,11 @@ export default function Home() {
     } catch {
       alert('Error opening billing portal.')
     }
+  } else {
+    // FreeユーザーはまだStripeに顧客がいないので、料金ページを見せてアップグレードを促す
+    router.push('/pricing')
   }
+}
 
   const handleAnalyze = async () => {
     if (!file && !text.trim()) return
@@ -553,13 +564,13 @@ export default function Home() {
               transition: 'all 0.15s',
             }}
           >
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*,.pdf"
-              style={{ display: 'none' }}
-              onChange={e => { if (e.target.files?.[0]) handleFile(e.target.files[0]) }}
-            />
+          <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*" // これでスマホ側が「カメラ」と「フォトライブラリ」の選択肢を出してくれます
+        style={{ display: 'none' }}
+        onChange={e => { if (e.target.files?.[0]) handleFile(e.target.files[0]) }}
+      />
             {preview ? (
               <>
                 <img src={preview} alt="preview" style={{ maxHeight: 180, maxWidth: '100%', borderRadius: 8, marginBottom: 8 }} />
@@ -640,7 +651,7 @@ export default function Home() {
                 {/* Standardユーザーには「月間上限」、Freeユーザーには「フリープラン上限」メッセージ */}
                 <div style={{ fontSize: 15, fontWeight: 500, color: '#fff', marginBottom: 4 }}>
                   {isStandard
-                    ? 'Monthly limit reached (30/30)'
+                    ? `Monthly limit reached (${usageCount}/30)`
                     : t.freeLimitTitle
                   }
                 </div>
