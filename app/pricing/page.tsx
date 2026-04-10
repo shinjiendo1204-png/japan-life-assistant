@@ -57,7 +57,7 @@ export default function PricingPage() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
         localStorage.setItem('pendingPriceId', priceId)
-        router.push('/auth?mode=signup')
+        router.push('/auth?mode=signup&from=standard')
         return
       }
       const res = await fetch('/api/checkout', {
