@@ -286,8 +286,9 @@ const UI: Record<string, Record<string, string>> = {
 }
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false) // スマホハング対策
   const [authLoading, setAuthLoading] = useState(true)
-  const [plan, setPlan] = useState<string>('free')           // ← 追加：プラン管理
+  const [plan, setPlan] = useState<string>('free')
   const [language, setLanguage] = useState('en')
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
@@ -297,6 +298,7 @@ export default function Home() {
   const [dragOver, setDragOver] = useState(false)
   const [inputMode, setInputMode] = useState<'upload' | 'text'>('upload')
   const [copied, setCopied] = useState(false)
+  const [usageCount, setUsageCount] = useState(0)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
@@ -311,35 +313,37 @@ export default function Home() {
     marginBottom: 10,
   }
 
-  // stateを追加
-const [usageCount, setUsageCount] = useState(0)
-
-useEffect(() => {
-  supabase.auth.getUser().then(async ({ data: { user } }) => {
-    if (!user) {
-      router.push('/landing')
-    } else {
-      try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('plan, usage_count')
-          .eq('id', user.id)
-          .single()
-        
-        // データが見つかればセット。エラー（見つからない）でも止まらないようにする
-        if (data) {
-          setPlan(data.plan || 'free')
-          setUsageCount(data.usage_count || 0)
+  useEffect(() => {
+    setMounted(true) // コンポーネントがクライアントで読み込まれたことを示す
+    
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!user) {
+        router.push('/landing')
+      } else {
+        try {
+          const { data } = await supabase
+            .from('profiles')
+            .select('plan, usage_count')
+            .eq('id', user.id)
+            .single()
+          
+          if (data) {
+            setPlan(data.plan || 'free')
+            setUsageCount(data.usage_count || 0)
+          }
+        } catch (err) {
+          console.error("Profile fetch error:", err)
+        } finally {
+          setAuthLoading(false)
         }
-      } catch (err) {
-        console.error("Profile fetch error:", err)
-      } finally {
-        // 何があっても、ユーザー認証自体は終わっているのでLoadingは解除する
-        setAuthLoading(false)
       }
-    }
-  })
-}, [])
+    }).catch(() => {
+      setAuthLoading(false)
+    })
+  }, [router])
+
+  // マウント前はハイドレーションエラーを避けるために何も返さない
+  if (!mounted) return null
 
   const handleFile = (f: File) => {
     if (f.size > 10 * 1024 * 1024) {
@@ -359,25 +363,23 @@ useEffect(() => {
   }
 
   const handlePortal = async () => {
-  // StandardプランならStripeの管理画面へ
-  if (isStandard) {
-    try {
-      const { data: { session } } = await supabase.auth.getSession()
-      const res = await fetch('/api/portal', {
-        method: 'POST',
-        headers: session ? { 'Authorization': `Bearer ${session.access_token}` } : {},
-      })
-      const data = await res.json()
-      if (data.url) window.location.href = data.url
-      else alert(data.error || 'Could not open billing portal.')
-    } catch {
-      alert('Error opening billing portal.')
+    if (isStandard) {
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
+        const res = await fetch('/api/portal', {
+          method: 'POST',
+          headers: session ? { 'Authorization': `Bearer ${session.access_token}` } : {},
+        })
+        const data = await res.json()
+        if (data.url) window.location.href = data.url
+        else alert(data.error || 'Could not open billing portal.')
+      } catch {
+        alert('Error opening billing portal.')
+      }
+    } else {
+      router.push('/pricing')
     }
-  } else {
-    // FreeユーザーはまだStripeに顧客がいないので、料金ページを見せてアップグレードを促す
-    router.push('/pricing')
   }
-}
 
   const handleAnalyze = async () => {
     if (!file && !text.trim()) return
@@ -409,6 +411,9 @@ useEffect(() => {
     setTimeout(() => setCopied(false), 2000)
   }
 
+  const isStandard = plan === 'standard'
+  const canAnalyze = inputMode === 'upload' ? !!file : !!text.trim()
+
   if (authLoading) return (
     <main style={{ maxWidth: 680, margin: '0 auto', padding: '1.5rem 1rem' }}>
       <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
@@ -416,23 +421,11 @@ useEffect(() => {
           Sort<span style={{ color: '#e53935' }}>Japan</span>
         </div>
       </nav>
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: 28, fontWeight: 500, lineHeight: 1.3, color: '#111', marginBottom: 10 }}>
-          Japanese documents, explained instantly.
-        </h1>
-        <p style={{ fontSize: 15, color: '#666', lineHeight: 1.6 }}>
-          Upload any Japanese mail, contract, or notice.
-        </p>
-      </div>
-      <div style={{ width: '100%', height: 200, background: '#f7f7f7', borderRadius: 14,
-        display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ width: '100%', height: 200, background: '#f7f7f7', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ fontSize: 13, color: '#bbb' }}>Loading...</div>
       </div>
     </main>
   )
-
-  const canAnalyze = inputMode === 'upload' ? !!file : !!text.trim()
-  const isStandard = plan === 'standard'
 
   return (
     <main style={{ maxWidth: 680, margin: '0 auto', padding: '1.5rem 1rem' }}>
@@ -446,36 +439,37 @@ useEffect(() => {
           Sort<span style={{ color: '#e53935' }}>Japan</span>
         </div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          {/* Standardユーザーにはアップグレードボタンを表示しない */}
           {!isStandard && (
             <button
+              type="button"
               onClick={() => router.push('/pricing')}
               style={{
                 fontSize: 13, padding: '7px 16px', borderRadius: 20,
                 border: 'none', background: '#111', color: '#fff',
-                cursor: 'pointer', fontWeight: 500,
+                cursor: 'pointer', fontWeight: 500, touchAction: 'manipulation'
               }}
             >
               ✦ Upgrade
             </button>
           )}
-          {/* Accountボタン：クリックでStripe Customer Portal（解約・支払い管理） */}
           <button
+            type="button"
             onClick={handlePortal}
             style={{
               fontSize: 13, padding: '7px 16px', borderRadius: 20,
               border: '1px solid #ddd', background: 'transparent', color: '#666',
-              cursor: 'pointer',
+              cursor: 'pointer', touchAction: 'manipulation'
             }}
           >
             Account
           </button>
           <button
+            type="button"
             onClick={() => supabase.auth.signOut().then(() => router.push('/auth'))}
             style={{
               fontSize: 13, padding: '7px 16px', borderRadius: 20,
               border: '1px solid #ddd', background: 'transparent', color: '#666',
-              cursor: 'pointer',
+              cursor: 'pointer', touchAction: 'manipulation'
             }}
           >
             {t.signout}
@@ -501,6 +495,7 @@ useEffect(() => {
             {LANGUAGES.map(lang => (
               <button
                 key={lang.code}
+                type="button"
                 onClick={() => setLanguage(lang.code)}
                 style={{
                   display: 'flex',
@@ -513,6 +508,7 @@ useEffect(() => {
                   background: language === lang.code ? '#fff' : 'transparent',
                   cursor: 'pointer',
                   transition: 'all 0.12s',
+                  touchAction: 'manipulation'
                 }}
               >
                 <span style={{ fontSize: 20, lineHeight: 1 }}>{lang.flag}</span>
@@ -538,6 +534,7 @@ useEffect(() => {
           {(['upload', 'text'] as const).map(mode => (
             <button
               key={mode}
+              type="button"
               onClick={() => setInputMode(mode)}
               style={{
                 fontSize: 13,
@@ -549,6 +546,7 @@ useEffect(() => {
                 cursor: 'pointer',
                 fontWeight: inputMode === mode ? 500 : 400,
                 transition: 'all 0.12s',
+                touchAction: 'manipulation'
               }}
             >
               {mode === 'upload' ? t.uploadTab : t.textTab}
@@ -572,13 +570,13 @@ useEffect(() => {
               transition: 'all 0.15s',
             }}
           >
-          <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*" // これでスマホ側が「カメラ」と「フォトライブラリ」の選択肢を出してくれます
-        style={{ display: 'none' }}
-        onChange={e => { if (e.target.files?.[0]) handleFile(e.target.files[0]) }}
-      />
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={e => { if (e.target.files?.[0]) handleFile(e.target.files[0]) }}
+            />
             {preview ? (
               <>
                 <img src={preview} alt="preview" style={{ maxHeight: 180, maxWidth: '100%', borderRadius: 8, marginBottom: 8 }} />
@@ -626,6 +624,7 @@ useEffect(() => {
 
       {/* 解析ボタン */}
       <button
+        type="button"
         onClick={handleAnalyze}
         disabled={loading || !canAnalyze}
         style={{
@@ -640,6 +639,7 @@ useEffect(() => {
           cursor: loading || !canAnalyze ? 'default' : 'pointer',
           marginBottom: '1.5rem',
           transition: 'background 0.12s',
+          touchAction: 'manipulation'
         }}
       >
         {loading ? t.analyzing : t.analyze}
@@ -656,7 +656,6 @@ useEffect(() => {
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
               <div>
-                {/* Standardユーザーには「月間上限」、Freeユーザーには「フリープラン上限」メッセージ */}
                 <div style={{ fontSize: 15, fontWeight: 500, color: '#fff', marginBottom: 4 }}>
                   {isStandard
                     ? `Monthly limit reached (${usageCount}/30)`
@@ -669,14 +668,15 @@ useEffect(() => {
                     : t.freeLimitDesc
                   }
                 </div>
-                {/* Freeユーザーにのみアップグレードボタンを表示 */}
                 {!isStandard && (
                   <button
+                    type="button"
                     onClick={() => router.push('/pricing')}
                     style={{
                       padding: '9px 20px', borderRadius: 8,
                       background: '#fff', color: '#111',
                       border: 'none', fontSize: 13, fontWeight: 500, cursor: 'pointer',
+                      touchAction: 'manipulation'
                     }}
                   >
                     {t.upgrade} →
@@ -689,7 +689,6 @@ useEffect(() => {
             </div>
           </div>
 
-          {/* Freeユーザーにのみ特典リストを表示 */}
           {!isStandard && (
             <div style={{
               background: '#f7f7f7',
@@ -733,12 +732,13 @@ useEffect(() => {
             {output}
           </div>
           <button
+            type="button"
             onClick={handleCopy}
             style={{
               marginTop: 10, width: '100%', padding: '10px',
               borderRadius: 10, border: '0.5px solid #ddd',
               background: 'transparent', color: '#666',
-              fontSize: 13, cursor: 'pointer',
+              fontSize: 13, cursor: 'pointer', touchAction: 'manipulation'
             }}
           >
             {copied ? t.copied : t.copy}
@@ -746,7 +746,6 @@ useEffect(() => {
         </div>
       ) : null}
 
-      {/* 免責 */}
       <p style={{
         fontSize: 11, color: '#bbb',
         textAlign: 'center' as const,

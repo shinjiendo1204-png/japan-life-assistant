@@ -14,8 +14,11 @@ function AuthContent() {
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    if (searchParams.get('mode') === 'signup') {
-      setIsLogin(false)
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      if (params.get('mode') === 'signup') {
+        setIsLogin(false)
+      }
     }
   }, [])
 
@@ -193,6 +196,7 @@ function AuthContent() {
 
       {/* ボタン */}
       <button
+        type="button"
         onClick={handleAuth}
         disabled={loading || !email || !password}
         style={{
