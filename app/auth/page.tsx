@@ -82,16 +82,36 @@ function AuthContent() {
   }
 
   const isSignup = !isLogin
-  const fromAnalyze = searchParams.get('mode') === 'signup' || searchParams.get('from') === 'analyze'
+  const fromStandard = searchParams.get('from') === 'standard'
+  const fromAnalyze = searchParams.get('from') === 'analyze' || searchParams.get('mode') === 'signup'
 
   return (
     <main style={{ maxWidth: 400, margin: '4rem auto', padding: '0 1rem' }}>
 
+      {/* ロゴ */}
       <div style={{ fontSize: 20, fontWeight: 500, letterSpacing: '-0.5px', color: '#111', marginBottom: 24 }}>
         Sort<span style={{ color: '#e53935' }}>Japan</span>
       </div>
 
-      {fromAnalyze && (
+      {/* Standard向けバナー */}
+      {fromStandard && isSignup && (
+        <div style={{
+          background: '#111',
+          borderRadius: 12,
+          padding: '14px 16px',
+          marginBottom: 20,
+        }}>
+          <div style={{ fontSize: 14, fontWeight: 500, color: '#fff', marginBottom: 4 }}>
+            Create an account to subscribe
+          </div>
+          <div style={{ fontSize: 13, color: '#aaa', lineHeight: 1.5 }}>
+            After signing up you'll be taken directly to checkout — $15/month, cancel anytime.
+          </div>
+        </div>
+      )}
+
+      {/* Free向けバナー（fromAnalyzeかつStandardでない場合） */}
+      {fromAnalyze && !fromStandard && isSignup && (
         <div style={{
           background: '#f0f4ff',
           border: '1px solid #c7d7ff',
@@ -108,13 +128,20 @@ function AuthContent() {
         </div>
       )}
 
+      {/* タイトル */}
       <h1 style={{ fontSize: 22, fontWeight: 500, marginBottom: 6, color: '#111' }}>
         {isLogin ? 'Sign in' : 'Create your account'}
       </h1>
       <p style={{ color: '#888', marginBottom: 24, fontSize: 14 }}>
-        {isLogin ? 'Welcome back.' : 'Free — no credit card required.'}
+        {isLogin
+          ? 'Welcome back.'
+          : fromStandard
+            ? 'One step away from Standard — $15/month.'
+            : 'Free — no credit card required.'
+        }
       </p>
 
+      {/* メール入力 */}
       <input
         type="email"
         placeholder="Email"
@@ -129,6 +156,7 @@ function AuthContent() {
         }}
       />
 
+      {/* パスワード入力 */}
       <input
         type="password"
         placeholder="Password"
@@ -143,6 +171,7 @@ function AuthContent() {
         }}
       />
 
+      {/* ボタン */}
       <button
         onClick={handleAuth}
         disabled={loading || !email || !password}
@@ -156,9 +185,17 @@ function AuthContent() {
           transition: 'background 0.12s',
         }}
       >
-        {loading ? 'Loading...' : isLogin ? 'Sign in' : 'Sign up free'}
+        {loading
+          ? 'Loading...'
+          : isLogin
+            ? 'Sign in'
+            : fromStandard
+              ? 'Create account & continue to checkout'
+              : 'Sign up free'
+        }
       </button>
 
+      {/* Forgot password（サインインのみ） */}
       {isLogin && (
         <p style={{ textAlign: 'center', fontSize: 12, color: '#aaa', marginBottom: 14 }}>
           <span
@@ -170,7 +207,23 @@ function AuthContent() {
         </p>
       )}
 
-      {isSignup && (
+      {/* Standardからの場合：プラン説明 */}
+      {isSignup && fromStandard && (
+        <div style={{
+          background: '#f7f7f7',
+          borderRadius: 10,
+          padding: '12px 14px',
+          marginBottom: 14,
+          fontSize: 12,
+          color: '#888',
+          lineHeight: 1.6,
+        }}>
+          Standard plan · $15/month · 30 analyses/month · Cancel anytime
+        </div>
+      )}
+
+      {/* Freeからの場合：プラン説明 */}
+      {isSignup && !fromStandard && (
         <div style={{
           background: '#f7f7f7',
           borderRadius: 10,
@@ -190,16 +243,18 @@ function AuthContent() {
         </div>
       )}
 
+      {/* サインイン・サインアップ切替 */}
       <p style={{ textAlign: 'center', fontSize: 13, color: '#888' }}>
         {isLogin ? "Don't have an account? " : 'Already have an account? '}
         <span
           onClick={() => setIsLogin(!isLogin)}
           style={{ color: '#111', cursor: 'pointer', textDecoration: 'underline' }}
         >
-          {isLogin ? 'Sign up' : 'Sign in'}
+          {isLogin ? 'Sign up free' : 'Sign in'}
         </span>
       </p>
 
+      {/* メッセージ */}
       {message && (
         <p style={{
           marginTop: 14, fontSize: 13, color: '#555',
