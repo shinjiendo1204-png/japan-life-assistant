@@ -119,6 +119,7 @@ export default function PricingPage() {
           >
             {plan.highlight && (
               <div style={{
+                pointerEvents: 'none',
                 position: 'absolute' as const,
                 top: -12,
                 left: '50%',
