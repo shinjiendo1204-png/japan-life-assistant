@@ -33,7 +33,7 @@ const PLANS = [
     features: [
       '30 document analyses per month',
       'All 12 languages supported',
-      'Images upload',
+      'Image upload',
       'Text paste support',
     ],
     cta: 'Subscribe',
