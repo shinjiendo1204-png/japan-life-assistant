@@ -46,43 +46,10 @@ export default function PricingPage() {
   const [loading, setLoading] = useState<string | null>(null)
   const router = useRouter()
 
-  const handleSubscribe = async (priceId: string | null | undefined, planName: string) => {
-    // 修正ポイント①：ボタンを押した瞬間に「反応したこと」を確認できるようにする
-    if (!priceId) {
-      router.push('/auth')
-      return
-    }
-
-    setLoading(planName)
-
-    try {
-      // 修正ポイント②：getUser() の前にごくわずかな待機を入れるとスマホで安定します
-      await new Promise(resolve => setTimeout(resolve, 100))
-
-      // getSession() のほうが getUser() よりスマホでは圧倒的に速く、安定します
-      const { data: { session } } = await supabase.auth.getSession()
-      const user = session?.user
-
-      if (!user) {
-        localStorage.setItem('pendingPriceId', priceId)
-        router.push('/auth?mode=signup&from=standard')
-        return
-      }
-
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ priceId, userId: user.id }),
-      })
-      const data = await res.json()
-      if (data.url) window.location.href = data.url
-    } catch (e) {
-      console.error(e)
-      alert('Error: Please try again') // スマホでエラーが起きたかどうかわかるようにする
-    } finally {
-      setLoading(null)
-    }
-  }
+  const handleSubscribe = async (priceId, planName) => {
+  // 全てのロジックを無視して、ただの画面遷移だけにする
+  window.location.href = "/auth"; 
+}
 
   return (
     <main style={{ maxWidth: 680, margin: '0 auto', padding: '1.5rem 1rem' }}>
