@@ -20,6 +20,27 @@ function AuthContent() {
   }, [])
 
   const handleAfterAuth = async (userId: string) => {
+    // 1. まず、このユーザーのプロフィールが既にDBにあるか確認
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', userId)
+      .single()
+
+    // 2. なければ、初期値 'free' でプロフィールを作成
+    // これをやることで、Stripeを通さない無料ユーザーもDBに登録されます
+    if (!profile) {
+      await supabase.from('profiles').insert([
+        { 
+          id: userId, 
+          email: email, 
+          plan: 'free', 
+          usage_count: 0 
+        }
+      ])
+    }
+
+    // 3. ここから下は既存の処理（Stripeへのリダイレクトなど）
     const pendingPriceId = localStorage.getItem('pendingPriceId')
     if (pendingPriceId) {
       localStorage.removeItem('pendingPriceId')
@@ -37,7 +58,6 @@ function AuthContent() {
     }
     router.push('/')
   }
-
   const handleResetPassword = async () => {
     if (!email) {
       setMessage('Please enter your email address first.')
