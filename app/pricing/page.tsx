@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
@@ -43,47 +43,29 @@ const PLANS = [
 ]
 
 export default function PricingPage() {
-  const [mounted, setMounted] = useState(false)
   const [loading, setLoading] = useState<string | null>(null)
   const router = useRouter()
 
-  // スマホでのハイドレーションエラー（ボタン無反応）を防ぐための必須処理
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
   const handleSubscribe = async (priceId: string | null | undefined, planName: string) => {
-    if (!mounted) return // マウント前は実行させない
-
     if (!priceId) {
       router.push('/auth')
       return
     }
-
     setLoading(planName)
     try {
       const { data: { user } } = await supabase.auth.getUser()
-      
       if (!user) {
-        // 未ログイン時はLocalStorageに保存してサインアップへ
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('pendingPriceId', priceId)
-        }
+        localStorage.setItem('pendingPriceId', priceId)
         router.push('/auth?mode=signup&from=standard')
         return
       }
-
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ priceId, userId: user.id }),
       })
       const data = await res.json()
-      if (data.url) {
-        window.location.href = data.url
-      } else {
-        alert('Checkout error. Please try again.')
-      }
+      if (data.url) window.location.href = data.url
     } catch (e) {
       console.error(e)
     } finally {
@@ -91,25 +73,18 @@ export default function PricingPage() {
     }
   }
 
-  // スマホでの表示崩れ・フリーズを防ぐため、マウントされるまでは何も出さない
-  if (!mounted) return null
-
   return (
     <main style={{ maxWidth: 680, margin: '0 auto', padding: '1.5rem 1rem' }}>
 
       {/* ナビ */}
       <nav style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: '2rem' }}>
         <button
-          type="button"
           onClick={() => router.push('/')}
           style={{ fontSize: 13, color: '#888', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
         >
           ←
         </button>
-        <div 
-          onClick={() => router.push('/')}
-          style={{ fontSize: 20, fontWeight: 500, letterSpacing: '-0.5px', color: '#111', cursor: 'pointer' }}
-        >
+        <div style={{ fontSize: 20, fontWeight: 500, letterSpacing: '-0.5px', color: '#111' }}>
           Sort<span style={{ color: '#e53935' }}>Japan</span>
         </div>
       </nav>
@@ -124,7 +99,7 @@ export default function PricingPage() {
         </p>
       </div>
 
-      {/* プランカード */}
+      {/* プランカード（横並び） */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(2, 1fr)',
@@ -197,7 +172,6 @@ export default function PricingPage() {
             </ul>
 
             <button
-              type="button"
               onClick={() => handleSubscribe(plan.priceId, plan.name)}
               disabled={loading === plan.name}
               style={{
@@ -211,7 +185,6 @@ export default function PricingPage() {
                 fontWeight: 500,
                 cursor: loading === plan.name ? 'default' : 'pointer',
                 opacity: loading === plan.name ? 0.6 : 1,
-                touchAction: 'manipulation'
               }}
             >
               {loading === plan.name ? 'Loading...' : plan.cta}
