@@ -47,18 +47,28 @@ export default function PricingPage() {
   const router = useRouter()
 
   const handleSubscribe = async (priceId: string | null | undefined, planName: string) => {
+    // 修正ポイント①：ボタンを押した瞬間に「反応したこと」を確認できるようにする
     if (!priceId) {
       router.push('/auth')
       return
     }
+
     setLoading(planName)
+
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      // 修正ポイント②：getUser() の前にごくわずかな待機を入れるとスマホで安定します
+      await new Promise(resolve => setTimeout(resolve, 100))
+
+      // getSession() のほうが getUser() よりスマホでは圧倒的に速く、安定します
+      const { data: { session } } = await supabase.auth.getSession()
+      const user = session?.user
+
       if (!user) {
         localStorage.setItem('pendingPriceId', priceId)
         router.push('/auth?mode=signup&from=standard')
         return
       }
+
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -68,6 +78,7 @@ export default function PricingPage() {
       if (data.url) window.location.href = data.url
     } catch (e) {
       console.error(e)
+      alert('Error: Please try again') // スマホでエラーが起きたかどうかわかるようにする
     } finally {
       setLoading(null)
     }
@@ -173,6 +184,7 @@ export default function PricingPage() {
             </ul>
 
             <button
+            type="button"
               onClick={() => handleSubscribe(plan.priceId, plan.name)}
               disabled={loading === plan.name}
               style={{
@@ -186,6 +198,8 @@ export default function PricingPage() {
                 fontWeight: 500,
                 cursor: loading === plan.name ? 'default' : 'pointer',
                 opacity: loading === plan.name ? 0.6 : 1,
+                touchAction: 'manipulation',
+                WebkitAppearance: 'none',    
               }}
             >
               {loading === plan.name ? 'Loading...' : plan.cta}
