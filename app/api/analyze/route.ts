@@ -184,6 +184,7 @@ NHK, 電気・ガス・水道, インターネット, 携帯電話, 宅配通知
 - For 更新: explain auto-renewal terms and fee structure
 - For 修繕: clarify who is responsible (landlord vs tenant)
 - Flag anything unusual or potentially unfair
+- Cross-verify amounts: For fees like 更新料 (Renewal fee), always compare the amount to the monthly rent. In Japan, it's typically equal to 0.5 to 2 months' rent. If the extracted fee is suspiciously low (e.g., 5-10% of the rent), it might be a different fee like 共益費 (Common area fee). Re-examine the document labels carefully.
 
 ### For Work/Business messages (C):
 - Translate preserving the tone and formality level
