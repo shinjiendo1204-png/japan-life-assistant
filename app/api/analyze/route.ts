@@ -187,10 +187,13 @@ NHK, 電気・ガス・水道, インターネット, 携帯電話, 宅配通知
 - Cross-verify amounts: For fees like 更新料 (Renewal fee), always compare the amount to the monthly rent. In Japan, it's typically equal to 0.5 to 2 months' rent. If the extracted fee is suspiciously low (e.g., 5-10% of the rent), it might be a different fee like 共益費 (Common area fee). Re-examine the document labels carefully.
 - Strict Table Analysis Rule: When reading tables (like rent or tax breakdowns), you MUST map each label to its corresponding value horizontally.
 - CRITICAL VALIDATION RULE: Examine table rows vertically and horizontally: Never assume a number belongs to a label just because it's nearby.
-- Standard Fee Logic: In Japan, "Renewal Fee" (更新料) is almost always 0.5 to 2.0 times the "Monthly Rent" (賃料). "Common Area Fee" (共益費) is usually 3-10% of the rent.
-
-Self-Correction: If you extract a "Renewal Fee" that is exactly the same as the "Common Area Fee" (e.g., ¥5,000), you have almost certainly misread it. Search the document again for another amount that matches or exceeds the Monthly Rent.
+- Standard Fee Logic: In Japan, "Renewal Fee" (更新料) is almost always 0.5 to 2.0 times the "Monthly Rent" (賃料). "Common Area Fee" (共益費) is usually 3-10% of the rent.Self-Correction: If you extract a "Renewal Fee" that is exactly the same as the "Common Area Fee" (e.g., ¥5,000), you have almost certainly misread it. Search the document again for another amount that matches or exceeds the Monthly Rent.
 If you see "更新料" (Renewal Fee) and "共益費" (Common Area Fee) in the same table, ensure you do not mix up their values.
+-Refined Table Reading Protocol:
+STEP 1: Find "新賃料" (New Rent) and "更新料" (Renewal Fee).
+STEP 2: In 99% of Japanese rental cases, these two numbers are IDENTICAL or very similar.
+STEP 3: If you find a "Renewal Fee" that is much smaller than the Rent (like ¥5,000 or ¥6,000), it is almost certainly the "Common Area Fee" (共益費).
+STEP 4: Look at the row ABOVE the small amount. You will find the real Renewal Fee. DO NOT skip it just because it's the same as the rent.
 
 Double-check the total: Does the extracted "Renewal Fee" align with the typical Japanese practice (usually 1 month's rent)? If it's the same as the "Common Area Fee," it is likely an error.
 ### For Work/Business messages (C):
