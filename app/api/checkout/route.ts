@@ -11,6 +11,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Price ID is required' }, { status: 400 })
     }
 
+    // 現在のリクエストからオリジン（ドメイン部分）を動的に取得
+    const origin = req.nextUrl.origin; 
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
@@ -18,8 +21,9 @@ export async function POST(req: NextRequest) {
       metadata: {
         user_id: userId || '',
       },
-      success_url: 'http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}',
-      cancel_url: 'http://localhost:3000/pricing',
+      // localhost を origin に書き換える
+      success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/pricing`,
     })
 
     return NextResponse.json({ url: session.url })
