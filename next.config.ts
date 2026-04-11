@@ -1,18 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // ① 古い端末向けのライブラリ変換
-  transpilePackages: ['@anthropic-ai/sdk', '@supabase/supabase-js'],
+  // ① Anthropic SDKをここから削除
+  transpilePackages: ['@supabase/supabase-js'],
 
-  // ② 画像最適化（古いSafariでのトラブル防止）
+  // ② 画像最適化
   images: {
     unoptimized: true,
   },
 
-  // ③ サーバーサイドパッケージの設定
-  serverExternalPackages: ['@anthropic-ai/sdk'],
 
-  // 注意: swcMinify は削除しました（最新版では不要）
+  serverExternalPackages: ['@anthropic-ai/sdk'],
 };
 
 export default nextConfig;
