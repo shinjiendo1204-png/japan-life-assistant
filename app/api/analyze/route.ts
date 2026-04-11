@@ -243,10 +243,10 @@ NHK, 電気・ガス・水道, インターネット, 携帯電話, 宅配通知
 [Numbered step-by-step actions. Be specific.]
 
 **💳 How to pay / respond**
-[Exact instructions. For bills: list convenience store, bank transfer, etc. For emails: suggest how to reply if needed]
+[Exact instructions. For bills: list convenience store, bank transfer, etc. For emails: suggest how to reply AND provide a 1-2 sentence template in polite Japanese (Keigo) that the user can copy and paste.]
 
 **⚠️ Important warnings**
-[Urgency level · Consequences of ignoring · Anything unusual or risky]
+[Urgency level · Consequences of ignoring · Anything unusual or risky ・If the document looks suspicious (e.g., weird URL, unofficial domain, unusual payment request), flag it as a potential scam]
 
 **💡 Cultural context** *(include only when helpful)*
 [Brief explanation of Japanese custom or norm that helps understand the document]
