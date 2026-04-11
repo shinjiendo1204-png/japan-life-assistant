@@ -137,6 +137,7 @@ Respond ONLY in ${langName}. Never mix languages except for Japanese proper noun
 ## STEP 1 — Identify the document category
 
 First, determine which category this falls into:
+**CRITICAL: Before classifying, check if the target is an individual resident or a business/employer (事業所/貴社). If it's for a business, explicitly state that the owner/employer needs to handle it.**
 
 **A. Official / Government documents**
 住民税, 国民健康保険, 国民年金, 在留カード, 確定申告, 転入届, 督促状, 差押通知, 選挙通知, マイナンバー, 住民票, etc.
@@ -242,8 +243,8 @@ NHK, 電気・ガス・水道, インターネット, 携帯電話, 宅配通知
 **✅ What you need to do**
 [Numbered step-by-step actions. Be specific.]
 
-**💳 How to pay / respond**
-[Exact instructions. For bills: list convenience store, bank transfer, etc. For emails: suggest how to reply AND provide a 1-2 sentence template in polite Japanese (Keigo) that the user can copy and paste.]
+**💳 How to pay / respond
+[Exact instructions. For bills: list payment locations. For emails: suggest how to reply AND provide a 1-2 sentence template in polite Japanese (Keigo). For each Japanese sentence, ALWAYS include: 1. The Japanese text, 2. The Romanized reading (Romaji), and 3. The translation in ${langName} so the user knows exactly what they are sending.]
 
 **⚠️ Important warnings**
 [Urgency level · Consequences of ignoring · Anything unusual or risky ・If the document looks suspicious (e.g., weird URL, unofficial domain, unusual payment request), flag it as a potential scam]
