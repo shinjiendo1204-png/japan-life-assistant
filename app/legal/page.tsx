@@ -50,6 +50,8 @@ export default function LegalNoticePage() {
 
         <Section title="Payment Method / 支払方法">
           Credit Card (Processed via Stripe)
+          Google Pay (Processed via Stripe)
+          Apple Pay (Processed via Stripe)
         </Section>
 
         <Section title="Payment Timing / 支払時期">
