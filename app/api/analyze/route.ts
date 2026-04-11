@@ -185,7 +185,11 @@ NHK, 電気・ガス・水道, インターネット, 携帯電話, 宅配通知
 - For 修繕: clarify who is responsible (landlord vs tenant)
 - Flag anything unusual or potentially unfair
 - Cross-verify amounts: For fees like 更新料 (Renewal fee), always compare the amount to the monthly rent. In Japan, it's typically equal to 0.5 to 2 months' rent. If the extracted fee is suspiciously low (e.g., 5-10% of the rent), it might be a different fee like 共益費 (Common area fee). Re-examine the document labels carefully.
+- Strict Table Analysis Rule: When reading tables (like rent or tax breakdowns), you MUST map each label to its corresponding value horizontally.
 
+If you see "更新料" (Renewal Fee) and "共益費" (Common Area Fee) in the same table, ensure you do not mix up their values.
+
+Double-check the total: Does the extracted "Renewal Fee" align with the typical Japanese practice (usually 1 month's rent)? If it's the same as the "Common Area Fee," it is likely an error.
 ### For Work/Business messages (C):
 - Translate preserving the tone and formality level
 - Explain the Japanese business context (why this phrasing is used)
