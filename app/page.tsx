@@ -313,6 +313,14 @@ export default function Home() {
     marginBottom: 10,
   }
 
+  const handleRemoveFile = (e: React.MouseEvent) => {
+    e.stopPropagation() 
+    setFile(null)
+    setPreview(null)
+    setOutput('')
+    if (fileInputRef.current) fileInputRef.current.value = ''
+  }
+
   useEffect(() => {
     setMounted(true) // コンポーネントがクライアントで読み込まれたことを示す
     
@@ -561,6 +569,7 @@ export default function Home() {
             onDragLeave={() => setDragOver(false)}
             onClick={() => fileInputRef.current?.click()}
             style={{
+              position: 'relative',
               border: `1.5px dashed ${dragOver ? '#111' : file ? '#4caf50' : '#ccc'}`,
               borderRadius: 14,
               padding: '2.5rem 1.5rem',
@@ -574,9 +583,25 @@ export default function Home() {
               ref={fileInputRef}
               type="file"
               accept="image/*"
+              capture="environment"
               style={{ display: 'none' }}
               onChange={e => { if (e.target.files?.[0]) handleFile(e.target.files[0]) }}
             />
+            {file && (
+              <button
+                onClick={handleRemoveFile}
+                style={{
+                  position: 'absolute', top: 12, right: 12,
+                  width: 28, height: 28, borderRadius: '50%',
+                  background: 'rgba(0,0,0,0.6)', color: '#fff',
+                  border: 'none', display: 'flex', alignItems: 'center',
+                  justifyContent: 'center', fontSize: 16, cursor: 'pointer',
+                  zIndex: 10
+                }}
+              >
+                ✕
+              </button>
+            )}
             {preview ? (
               <>
                 <img src={preview} alt="preview" style={{ maxHeight: 180, maxWidth: '100%', borderRadius: 8, marginBottom: 8 }} />
