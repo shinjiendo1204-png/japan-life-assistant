@@ -186,7 +186,10 @@ NHK, 電気・ガス・水道, インターネット, 携帯電話, 宅配通知
 - Flag anything unusual or potentially unfair
 - Cross-verify amounts: For fees like 更新料 (Renewal fee), always compare the amount to the monthly rent. In Japan, it's typically equal to 0.5 to 2 months' rent. If the extracted fee is suspiciously low (e.g., 5-10% of the rent), it might be a different fee like 共益費 (Common area fee). Re-examine the document labels carefully.
 - Strict Table Analysis Rule: When reading tables (like rent or tax breakdowns), you MUST map each label to its corresponding value horizontally.
+- CRITICAL VALIDATION RULE: Examine table rows vertically and horizontally: Never assume a number belongs to a label just because it's nearby.
+- Standard Fee Logic: In Japan, "Renewal Fee" (更新料) is almost always 0.5 to 2.0 times the "Monthly Rent" (賃料). "Common Area Fee" (共益費) is usually 3-10% of the rent.
 
+Self-Correction: If you extract a "Renewal Fee" that is exactly the same as the "Common Area Fee" (e.g., ¥5,000), you have almost certainly misread it. Search the document again for another amount that matches or exceeds the Monthly Rent.
 If you see "更新料" (Renewal Fee) and "共益費" (Common Area Fee) in the same table, ensure you do not mix up their values.
 
 Double-check the total: Does the extracted "Renewal Fee" align with the typical Japanese practice (usually 1 month's rent)? If it's the same as the "Common Area Fee," it is likely an error.
