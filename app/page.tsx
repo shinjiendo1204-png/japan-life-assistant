@@ -20,8 +20,6 @@ const LANGUAGES = [
 
 const UI: Record<string, Record<string, string>> = {
   en: {
-    tagline: 'Japanese documents, explained instantly.',
-    subtitle: 'Upload any Japanese mail, contract, or notice. Get a clear explanation in your language — in seconds.',
     langLabel: 'Language',
     docLabel: 'Document',
     uploadTab: 'Upload file',
@@ -42,8 +40,6 @@ const UI: Record<string, Record<string, string>> = {
     resultLabel: 'Result',
   },
   es: {
-    tagline: 'Documentos japoneses, explicados al instante.',
-    subtitle: 'Sube cualquier correo, contrato o aviso japonés. Obtén una explicación clara en tu idioma, en segundos.',
     langLabel: 'Idioma',
     docLabel: 'Documento',
     uploadTab: 'Subir archivo',
@@ -64,8 +60,6 @@ const UI: Record<string, Record<string, string>> = {
     resultLabel: 'Resultado',
   },
   pt: {
-    tagline: 'Documentos japoneses, explicados na hora.',
-    subtitle: 'Envie qualquer correio, contrato ou aviso japonês. Obtenha uma explicação clara no seu idioma em segundos.',
     langLabel: 'Idioma',
     docLabel: 'Documento',
     uploadTab: 'Enviar arquivo',
@@ -86,8 +80,6 @@ const UI: Record<string, Record<string, string>> = {
     resultLabel: 'Resultado',
   },
   zh: {
-    tagline: '日文文件，即时解读。',
-    subtitle: '上传任何日文邮件、合同或通知，即可获得您语言的清晰解释——仅需数秒。',
     langLabel: '语言',
     docLabel: '文件',
     uploadTab: '上传文件',
@@ -102,14 +94,12 @@ const UI: Record<string, Record<string, string>> = {
     copied: '已复制！',
     signout: '退出登录',
     freeLimitTitle: '已达到免费计划限制',
-    freeLimitDesc: '升级到Standard，每月30次分析（每月$15）',
+    freeLimitDesc: '升级到Standard,每月30次分析（每月$15）',
     upgrade: '立即升级',
     disclaimer: '此分析仅供参考。行动前请向相关机构确认。',
     resultLabel: '结果',
   },
   ko: {
-    tagline: '일본어 문서, 즉시 설명.',
-    subtitle: '어떤 일본어 우편물, 계약서, 공지든 업로드하세요. 몇 초 안에 모국어로 명확한 설명을 받으세요.',
     langLabel: '언어',
     docLabel: '문서',
     uploadTab: '파일 업로드',
@@ -130,8 +120,6 @@ const UI: Record<string, Record<string, string>> = {
     resultLabel: '결과',
   },
   vi: {
-    tagline: 'Tài liệu Nhật Bản, giải thích ngay lập tức.',
-    subtitle: 'Tải lên bất kỳ thư, hợp đồng hoặc thông báo tiếng Nhật nào. Nhận giải thích rõ ràng bằng ngôn ngữ của bạn trong vài giây.',
     langLabel: 'Ngôn ngữ',
     docLabel: 'Tài liệu',
     uploadTab: 'Tải lên file',
@@ -152,8 +140,6 @@ const UI: Record<string, Record<string, string>> = {
     resultLabel: 'Kết quả',
   },
   tl: {
-    tagline: 'Mga Japanese na dokumento, agad na naipaliwanag.',
-    subtitle: 'Mag-upload ng anumang Japanese na sulat, kontrata, o abiso. Makakuha ng malinaw na paliwanag sa iyong wika sa loob ng ilang segundo.',
     langLabel: 'Wika',
     docLabel: 'Dokumento',
     uploadTab: 'Mag-upload ng file',
@@ -174,8 +160,6 @@ const UI: Record<string, Record<string, string>> = {
     resultLabel: 'Resulta',
   },
   ne: {
-    tagline: 'जापानी कागजात, तुरुन्तै व्याख्या।',
-    subtitle: 'कुनै पनि जापानी पत्र, सम्झौता वा सूचना अपलोड गर्नुहोस्। केही सेकेन्डमा आफ्नो भाषामा स्पष्ट व्याख्या पाउनुहोस्।',
     langLabel: 'भाषा',
     docLabel: 'कागजात',
     uploadTab: 'फाइल अपलोड',
@@ -196,8 +180,6 @@ const UI: Record<string, Record<string, string>> = {
     resultLabel: 'नतिजा',
   },
   id: {
-    tagline: 'Dokumen Jepang, dijelaskan seketika.',
-    subtitle: 'Upload surat, kontrak, atau pemberitahuan Jepang apa pun. Dapatkan penjelasan yang jelas dalam bahasa Anda dalam hitungan detik.',
     langLabel: 'Bahasa',
     docLabel: 'Dokumen',
     uploadTab: 'Upload file',
@@ -218,8 +200,6 @@ const UI: Record<string, Record<string, string>> = {
     resultLabel: 'Hasil',
   },
   th: {
-    tagline: 'เอกสารภาษาญี่ปุ่น อธิบายได้ทันที',
-    subtitle: 'อัปโหลดจดหมาย สัญญา หรือประกาศภาษาญี่ปุ่น รับคำอธิบายที่ชัดเจนในภาษาของคุณภายในไม่กี่วินาที',
     langLabel: 'ภาษา',
     docLabel: 'เอกสาร',
     uploadTab: 'อัปโหลดไฟล์',
@@ -240,8 +220,6 @@ const UI: Record<string, Record<string, string>> = {
     resultLabel: 'ผลลัพธ์',
   },
   my: {
-    tagline: 'ဂျပန်စာရွက်စာတမ်း၊ ချက်ချင်းရှင်းပြ။',
-    subtitle: 'ဂျပန်စာပေးစာ၊ စာချုပ် သို့မဟုတ် ကြေညာချက်မဆို အပ်လုဒ်လုပ်ပါ။ မိမိဘာသာစကားဖြင့် ရှင်းလင်းသောရှင်းပြချက်ကို ရယူပါ',
     langLabel: 'ဘာသာစကား',
     docLabel: 'စာရွက်စာတမ်း',
     uploadTab: 'ဖိုင်တင်မည်',
@@ -262,8 +240,6 @@ const UI: Record<string, Record<string, string>> = {
     resultLabel: 'ရလဒ်',
   },
   fr: {
-    tagline: 'Documents japonais, expliqués instantanément.',
-    subtitle: 'Téléchargez n\'importe quel courrier, contrat ou avis japonais. Obtenez une explication claire dans votre langue en quelques secondes.',
     langLabel: 'Langue',
     docLabel: 'Document',
     uploadTab: 'Télécharger un fichier',

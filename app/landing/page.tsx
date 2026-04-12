@@ -102,11 +102,10 @@ export default function LandingPage() {
           fontSize: 34, fontWeight: 500, lineHeight: 1.2,
           color: '#111', marginBottom: 14, letterSpacing: '-0.5px',
         }}>
-          Any Japanese documents,<br />explained instantly.
+          Any Japanese text,<br />explained instantly.
         </h1>
         <p style={{ fontSize: 15, color: '#666', lineHeight: 1.7, maxWidth: 520, marginBottom: 22 }}>
-          Tax bills, work emails, rental contracts, hospital letters — upload anything in Japanese
-          and get a clear explanation in your language in seconds. No Japanese needed.
+          Work emails, LINE messages, tax bills, rental contracts — paste or upload anything in Japanese.
         </p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' as const }}>
           <Link href="/auth?mode=signup" style={{
